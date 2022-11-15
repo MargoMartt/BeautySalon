@@ -1,7 +1,5 @@
 package Utility;
 
-import TCP.Request;
-import TCP.RequestType;
 import TCP.Response;
 import com.google.gson.Gson;
 
@@ -32,7 +30,7 @@ public class ClientSocket {
         ObjectInputStream objectInputStream = new ObjectInputStream(instance.getInputStream());
         String message = String.valueOf(objectInputStream.readObject());
         Response response = gson.fromJson(message, Response.class);
-        System.out.println(objectInputStream.readObject());
+        System.out.println(response);
     }
 
     public ClientSocket() throws IOException {
