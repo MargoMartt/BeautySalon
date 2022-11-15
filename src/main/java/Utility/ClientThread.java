@@ -69,6 +69,7 @@ public class ClientThread implements Runnable {
                             outputStream.writeObject(new Gson().toJson(response));
                         } else {
                             response = new Response(ResponseType.ERROR, "Такой пользватель уже существует");
+                            outputStream.writeObject(new Gson().toJson(response));
                         }
                         break;
                     }
@@ -79,6 +80,7 @@ public class ClientThread implements Runnable {
                             outputStream.writeObject(new Gson().toJson(response));
                         } else {
                             response = new Response(ResponseType.ERROR, "Такого пользвателя не существует");
+                            outputStream.writeObject(new Gson().toJson(response));
                         }
                         break;
                     }
