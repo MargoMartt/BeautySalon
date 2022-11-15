@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="Entities.RecordEntity" table="record" schema="beautysalon">
+        <id name="recordId">
+            <column name="record_id" sql-type="int"/>
+        </id>
+        <property name="time">
+            <column name="time" sql-type="time"/>
+        </property>
+        <property name="date">
+            <column name="date" sql-type="date"/>
+        </property>
+        <property name="totalCost">
+            <column name="total_cost" sql-type="decimal(2)" precision="2"/>
+        </property>
+        <property name="idUser">
+            <column name="id_user" sql-type="int"/>
+        </property>
+        <property name="serviceId">
+            <column name="service_id" sql-type="int"/>
+        </property>
+    </class>
+</hibernate-mapping>

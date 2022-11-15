@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="Entities.ServiceEntity" table="service" schema="beautysalon">
+        <id name="serviceId">
+            <column name="service_id" sql-type="int"/>
+        </id>
+        <property name="serviceName">
+            <column name="service_name" sql-type="varchar(45)" length="45"/>
+        </property>
+        <property name="servicePrice">
+            <column name="service_price" sql-type="decimal(2)" precision="2"/>
+        </property>
+        <property name="servicecol">
+            <column name="servicecol" sql-type="varchar(45)" length="45"/>
+        </property>
+        <property name="masterId">
+            <column name="master_id" sql-type="int"/>
+        </property>
+        <many-to-one name="beautyMastersByMasterId" class="Entities.BeautyMastersEntity">
+            <column name="master_id"/>
+        </many-to-one>
+        <set name="recordsByServiceId" inverse="true">
+            <key>
+                <column name="service_id"/>
+            </key>
+            <one-to-many not-found="ignore" class="Entities.RecordEntity"/>
+        </set>
+    </class>
+</hibernate-mapping>

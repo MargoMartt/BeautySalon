@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="Entities.BeautyMastersEntity" table="beauty_masters" schema="beautysalon">
+        <id name="masterId">
+            <column name="master_id" sql-type="int"/>
+        </id>
+        <property name="masterSurname">
+            <column name="master_surname" sql-type="varchar(60)" length="60"/>
+        </property>
+        <property name="masterName">
+            <column name="master_name" sql-type="varchar(60)" length="60"/>
+        </property>
+        <property name="activity">
+            <column name="activity" sql-type="varchar(100)" length="100"/>
+        </property>
+        <property name="workExperience">
+            <column name="work_experience" sql-type="int"/>
+        </property>
+    </class>
+</hibernate-mapping>
