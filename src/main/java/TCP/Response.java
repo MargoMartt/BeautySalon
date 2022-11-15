@@ -2,13 +2,13 @@ package TCP;
 
 import com.google.gson.Gson;
 
-public class Response {
+public class Response <T> {
 private String responseMessage;
 private ResponseType responseType;
 
-    public Response(ResponseType responseType, String responseMessage) {
+    public Response(ResponseType responseType, T responseMessage) {
         this.responseType = responseType;
-        this.responseMessage = responseMessage;
+        this.responseMessage = new Gson().toJson(responseMessage);
     }
 
     public Response() {

@@ -14,7 +14,7 @@
 <!--      <mapping resource="RecordEntity.hbm.xml"/>-->
       <mapping class="Entities.RoleEntity"/>
 <!--      <mapping resource="RoleEntity.hbm.xml"/>-->
-      <mapping class="Entities.RoleHasUsersEntity"/>
+      <mapping class="Entities.UsersHasRoleEntity"/>
 <!--      <mapping resource="RoleHasUsersEntity.hbm.xml"/>-->
       <mapping class="Entities.ServiceEntity"/>
 <!--      <mapping resource="ServiceEntity.hbm.xml"/>-->

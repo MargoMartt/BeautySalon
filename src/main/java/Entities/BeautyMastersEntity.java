@@ -1,6 +1,6 @@
 package Entities;
-
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 @Table(name = "beauty_masters", schema = "salonbeauty", catalog = "")
@@ -10,17 +10,22 @@ public class BeautyMastersEntity {
     @Column(name = "master_id", nullable = false)
     private int masterId;
     @Basic
-    @Column(name = "master_surname", nullable = false, length = 60)
+    @Column(name = "master_surname", nullable = true, length = 60)
     private String masterSurname;
     @Basic
-    @Column(name = "master_name", nullable = false, length = 60)
+    @Column(name = "master_name", nullable = true, length = 60)
     private String masterName;
     @Basic
-    @Column(name = "activity", nullable = false, length = 100)
+    @Column(name = "activity", nullable = true, length = 100)
     private String activity;
     @Basic
-    @Column(name = "work_experience", nullable = false)
-    private int workExperience;
+    @Column(name = "work_experience", nullable = true)
+    private Integer workExperience;
+    @OneToMany(mappedBy = "serviseId")
+    private Collection<ServiceEntity> servicesByMasterId;
+
+    public BeautyMastersEntity() {
+    }
 
     public int getMasterId() {
         return masterId;
@@ -54,11 +59,19 @@ public class BeautyMastersEntity {
         this.activity = activity;
     }
 
-    public int getWorkExperience() {
+    public Integer getWorkExperience() {
         return workExperience;
     }
 
-    public void setWorkExperience(int workExperience) {
+    public void setWorkExperience(Integer workExperience) {
         this.workExperience = workExperience;
+    }
+
+    public Collection<ServiceEntity> getServicesByMasterId() {
+        return servicesByMasterId;
+    }
+
+    public void setServicesByMasterId(Collection<ServiceEntity> servicesByMasterId) {
+        this.servicesByMasterId = servicesByMasterId;
     }
 }

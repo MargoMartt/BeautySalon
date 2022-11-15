@@ -1,25 +1,21 @@
 package Utility;
 
 import Entities.RoleEntity;
-import Entities.RoleHasUsersEntity;
 import Entities.UsersEntity;
-
+import Entities.UsersHasRoleEntity;
 import Services.RoleHasUsersService;
 import Services.RoleService;
 import Services.UsersService;
+import TCP.Request;
 import TCP.Response;
-
 import TCP.ResponseType;
 import com.google.gson.Gson;
 
-import java.io.*;
-
-import org.json.*;
-
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Locale;
-
-import TCP.Request;
 
 public class ClientThread implements Runnable {
     private Socket clientSocket;
@@ -46,6 +42,7 @@ public class ClientThread implements Runnable {
     public void run() {
         try {
             while (clientSocket.isConnected()) {
+
                 String message = String.valueOf(inputStream.readObject());
                 request = gson.fromJson(message, Request.class);
                 String requestMessage = request.getRequestMessage();
@@ -58,11 +55,14 @@ public class ClientThread implements Runnable {
                         RoleEntity role = gson.fromJson(requestMessage, RoleEntity.class);
 
                         if (UsersService.findAllUsers().stream().noneMatch((x -> x.getLogin().equals(user.getLogin())))) {
-                            int id = UsersService.saveUser(user);
-                            System.out.println(id);
-                            System.out.println(user.toString());
-                            System.out.println(role.getIdRole());
-                            RoleHasUsersEntity entity = new RoleHasUsersEntity(id, role.getIdRole());
+                        UsersHasRoleEntity entity = new UsersHasRoleEntity(role.getIdRole());
+                        System.out.println(entity.toString());
+                        RoleHasUsersService.saveRole(entity);
+                        int id = UsersService.saveUser(user);
+                        entity.setUsersIdUser(id);
+                        RoleHasUsersService.saveRole(entity);
+                        System.out.println(user.toString());
+                        System.out.println(role.getIdRole());
                             System.out.println(entity.toString());
                             RoleHasUsersService.saveRole(entity);
                             response = new Response(ResponseType.Ok, "Пользователь зарегистрирован");

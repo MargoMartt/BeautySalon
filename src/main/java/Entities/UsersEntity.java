@@ -1,44 +1,31 @@
 package Entities;
-
-import TCP.Request;
-
 import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
 @Table(name = "users", schema = "salonbeauty", catalog = "")
 public class UsersEntity {
-
-    public UsersEntity(String userName, String userSurname, String login, String password) {
-        this.userName = userName;
-        this.userSurname = userSurname;
-        this.login = login;
-        this.password = password;
-    }
-
-    public UsersEntity() {
-    }
-
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id_user", nullable = false)
     private int idUser;
     @Basic
-    @Column(name = "user_name", nullable = false, length = 45)
+    @Column(name = "user_name", nullable = true, length = 45)
     private String userName;
     @Basic
-    @Column(name = "user_surname", nullable = false, length = 45)
+    @Column(name = "user_surname", nullable = true, length = 45)
     private String userSurname;
     @Basic
-    @Column(name = "login", nullable = false, length = 45)
+    @Column(name = "login", nullable = true, length = 45)
     private String login;
     @Basic
-    @Column(name = "password", nullable = false, length = 45)
+    @Column(name = "password", nullable = true, length = 45)
     private String password;
-    @OneToMany(mappedBy = "idUser")
-    private Collection<RecordEntity> recordsByIdUser;
     @OneToMany(mappedBy = "usersIdUser")
-    private Collection<RoleHasUsersEntity> roleHasUsersByIdUser;
+    private Collection<UsersHasRoleEntity> usersHasRolesByIdUser;
+
+    public UsersEntity() {
+    }
 
     public int getIdUser() {
         return idUser;
@@ -80,30 +67,11 @@ public class UsersEntity {
         this.password = password;
     }
 
-    public Collection<RecordEntity> getRecordsByIdUser() {
-        return recordsByIdUser;
+    public Collection<UsersHasRoleEntity> getUsersHasRolesByIdUser() {
+        return usersHasRolesByIdUser;
     }
 
-    public void setRecordsByIdUser(Collection<RecordEntity> recordsByIdUser) {
-        this.recordsByIdUser = recordsByIdUser;
-    }
-
-    public Collection<RoleHasUsersEntity> getRoleHasUsersByIdUser() {
-        return roleHasUsersByIdUser;
-    }
-
-    public void setRoleHasUsersByIdUser(Collection<RoleHasUsersEntity> roleHasUsersByIdUser) {
-        this.roleHasUsersByIdUser = roleHasUsersByIdUser;
-    }
-
-    @Override
-    public String toString() {
-        return "UsersEntity{" +
-                "idUser=" + idUser +
-                ", userName='" + userName + '\'' +
-                ", userSurname='" + userSurname + '\'' +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+    public void setUsersHasRolesByIdUser(Collection<UsersHasRoleEntity> usersHasRolesByIdUser) {
+        this.usersHasRolesByIdUser = usersHasRolesByIdUser;
     }
 }

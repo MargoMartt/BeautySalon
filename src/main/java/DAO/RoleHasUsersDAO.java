@@ -1,9 +1,6 @@
 package DAO;
 
-import Entities.BeautyMastersEntity;
-import Entities.RecordEntity;
-import Entities.RoleEntity;
-import Entities.RoleHasUsersEntity;
+import Entities.UsersHasRoleEntity;
 import Utility.HibernateSessionFactory;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -11,20 +8,19 @@ import org.hibernate.Transaction;
 import java.util.ArrayList;
 
 public class RoleHasUsersDAO {
-    public RoleHasUsersEntity findById(int id) {
-        return HibernateSessionFactory.getSessionFactory().openSession().get(RoleHasUsersEntity.class, id);
+    public UsersHasRoleEntity findById(int id) {
+        return HibernateSessionFactory.getSessionFactory().openSession().get(UsersHasRoleEntity.class, id);
     }
 
-    public void save(RoleHasUsersEntity role) {
+    public void save(UsersHasRoleEntity role) {
         Session session = HibernateSessionFactory.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
-//        session.save(role);
-        session.save(new RoleHasUsersEntity(1, 12));
+        session.save(role);
         transaction.commit();
         session.close();
     }
 
-    public void update(RoleHasUsersEntity role) {
+    public void update(UsersHasRoleEntity role) {
         Session session = HibernateSessionFactory.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         session.update(role);
@@ -32,7 +28,7 @@ public class RoleHasUsersDAO {
         session.close();
     }
 
-    public void delete(RoleHasUsersEntity role) {
+    public void delete(UsersHasRoleEntity role) {
         Session session = HibernateSessionFactory.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         session.delete(role);
@@ -40,9 +36,9 @@ public class RoleHasUsersDAO {
         session.close();
     }
 
-    public ArrayList<RoleHasUsersEntity> findAll() {
-        ArrayList<RoleHasUsersEntity> accountingEntities = new ArrayList<RoleHasUsersEntity>();
-        return (ArrayList<RoleHasUsersEntity>) HibernateSessionFactory.getSessionFactory().openSession().createQuery("from RoleHasUsersEntity ").list();
+    public ArrayList<UsersHasRoleEntity> findAll() {
+        ArrayList<UsersHasRoleEntity> rolesEntities = new ArrayList<UsersHasRoleEntity>();
+        return (ArrayList<UsersHasRoleEntity>) HibernateSessionFactory.getSessionFactory().openSession().createQuery("from UsersHasRoleEntity ").list();
 
     }
 

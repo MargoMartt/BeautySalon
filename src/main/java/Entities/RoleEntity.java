@@ -1,33 +1,21 @@
 package Entities;
-
-import TCP.Request;
-
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 @Table(name = "role", schema = "salonbeauty", catalog = "")
 public class RoleEntity {
-    public RoleEntity(int idRole) {
-        this.idRole = idRole;
-    }
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "id_role", nullable = false)
+    private int idRole;
+    @Basic
+    @Column(name = "role_name", nullable = true, length = 45)
+    private String roleName;
+    @OneToMany(mappedBy = "roleIdRole")
+    private Collection<UsersHasRoleEntity> usersHasRolesByIdRole;
 
     public RoleEntity() {
-    }
-
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name="id_role", nullable = false)
-    private int idRole;
-
-    @Column(name = "role_name", nullable = false, length = 15)
-    private String roleName;
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
     }
 
     public int getIdRole() {
@@ -38,11 +26,19 @@ public class RoleEntity {
         this.idRole = idRole;
     }
 
-    @Override
-    public String toString() {
-        return "RoleEntity{" +
-                "roleName='" + roleName + '\'' +
-                "idRole='" + idRole + '\'' +
-                '}';
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public Collection<UsersHasRoleEntity> getUsersHasRolesByIdRole() {
+        return usersHasRolesByIdRole;
+    }
+
+    public void setUsersHasRolesByIdRole(Collection<UsersHasRoleEntity> usersHasRolesByIdRole) {
+        this.usersHasRolesByIdRole = usersHasRolesByIdRole;
     }
 }

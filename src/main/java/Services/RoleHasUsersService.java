@@ -1,12 +1,7 @@
 package Services;
 
-import DAO.RoleDAO;
 import DAO.RoleHasUsersDAO;
-import Entities.RoleEntity;
-import Entities.RoleHasUsersEntity;
-import Utility.HibernateSessionFactory;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import Entities.UsersHasRoleEntity;
 
 import java.util.ArrayList;
 
@@ -16,23 +11,23 @@ public class RoleHasUsersService {
     public RoleHasUsersService() {
     }
 
-    public RoleHasUsersEntity findRole(int id) {
+    public UsersHasRoleEntity findRole(int id) {
         return roleDAO.findById(id);
     }
 
-    public static void saveRole(RoleHasUsersEntity role) {
+    public static void saveRole(UsersHasRoleEntity role) {
         roleDAO.save(role);
     }
 
-    public static void deleteRole(RoleHasUsersEntity role) {
+    public static void deleteRole(UsersHasRoleEntity role) {
         roleDAO.delete(role);
     }
 
-    public static void updateRole(RoleHasUsersEntity role) {
+    public static void updateRole(UsersHasRoleEntity role) {
         roleDAO.update(role);
     }
 
-    public static ArrayList<RoleHasUsersEntity> findAllRoles() {
+    public static ArrayList<UsersHasRoleEntity> findAllRoles() {
         return roleDAO.findAll();
     }
 

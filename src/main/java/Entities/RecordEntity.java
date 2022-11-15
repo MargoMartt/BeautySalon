@@ -1,5 +1,4 @@
 package Entities;
-
 import javax.persistence.*;
 import java.math.BigInteger;
 import java.sql.Date;
@@ -13,20 +12,29 @@ public class RecordEntity {
     @Column(name = "record_id", nullable = false)
     private int recordId;
     @Basic
-    @Column(name = "time", nullable = false)
+    @Column(name = "time", nullable = true)
     private Time time;
     @Basic
-    @Column(name = "date", nullable = false)
+    @Column(name = "date", nullable = true)
     private Date date;
     @Basic
-    @Column(name = "total_cost", nullable = false, precision = 0)
+    @Column(name = "total_cost", nullable = true, precision = 0)
     private BigInteger totalCost;
     @Basic
-    @Column(name = "id_user", nullable = false)
+    @Column(name = "id_user", insertable = false, updatable = false, nullable = false)
     private int idUser;
     @Basic
-    @Column(name = "service_id", nullable = false)
-    private int serviceId;
+    @Column(name = "servise_id", insertable = false, updatable = false, nullable = false)
+    private int serviseId;
+    @ManyToOne
+    @JoinColumn(name = "id_user", referencedColumnName = "id_user", nullable = false)
+    private UsersEntity usersByIdUser;
+    @ManyToOne
+    @JoinColumn(name = "servise_id", referencedColumnName = "servise_id", nullable = false)
+    private ServiceEntity serviceByServiseId;
+
+    public RecordEntity() {
+    }
 
     public int getRecordId() {
         return recordId;
@@ -68,11 +76,27 @@ public class RecordEntity {
         this.idUser = idUser;
     }
 
-    public int getServiceId() {
-        return serviceId;
+    public int getServiseId() {
+        return serviseId;
     }
 
-    public void setServiceId(int serviceId) {
-        this.serviceId = serviceId;
+    public void setServiseId(int serviseId) {
+        this.serviseId = serviseId;
+    }
+
+    public UsersEntity getUsersByIdUser() {
+        return usersByIdUser;
+    }
+
+    public void setUsersByIdUser(UsersEntity usersByIdUser) {
+        this.usersByIdUser = usersByIdUser;
+    }
+
+    public ServiceEntity getServiceByServiseId() {
+        return serviceByServiseId;
+    }
+
+    public void setServiceByServiseId(ServiceEntity serviceByServiseId) {
+        this.serviceByServiseId = serviceByServiseId;
     }
 }
