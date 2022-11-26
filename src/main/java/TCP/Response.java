@@ -14,6 +14,14 @@ private ResponseType responseType;
     public Response() {
     }
 
+    @Override
+    public String toString() {
+        return "Response{" +
+                "responseMessage='" + responseMessage + '\'' +
+                ", responseType=" + responseType +
+                '}';
+    }
+
     public String getResponseMessage() {
         return responseMessage;
     }

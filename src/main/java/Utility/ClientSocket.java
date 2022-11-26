@@ -9,7 +9,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class ClientSocket {
-   private static Gson gson;
+    private static Gson gson = new Gson();
     private static Socket instance;
 
     public static void setInstance() throws IOException {
@@ -26,11 +26,12 @@ public class ClientSocket {
         objectOutputStream.writeObject(new Gson().toJson(data));
     }
 
-    public static void listen() throws IOException, ClassNotFoundException {
+    public static Response listen() throws IOException, ClassNotFoundException {
         ObjectInputStream objectInputStream = new ObjectInputStream(instance.getInputStream());
         String message = String.valueOf(objectInputStream.readObject());
         Response response = gson.fromJson(message, Response.class);
-        System.out.println(response);
+        System.out.println(response.getResponseType());
+        return response;
     }
 
     public ClientSocket() throws IOException {

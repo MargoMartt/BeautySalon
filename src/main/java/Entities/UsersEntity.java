@@ -74,4 +74,15 @@ public class UsersEntity {
     public void setUsersHasRolesByIdUser(Collection<UsersHasRoleEntity> usersHasRolesByIdUser) {
         this.usersHasRolesByIdUser = usersHasRolesByIdUser;
     }
+
+    @Override
+    public String toString() {
+        return "UsersEntity{" +
+                "idUser=" + idUser +
+                ", userName='" + userName + '\'' +
+                ", userSurname='" + userSurname + '\'' +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

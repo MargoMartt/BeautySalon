@@ -11,6 +11,16 @@ public class UsersService {
     public UsersService() {
     }
 
+    public static UsersEntity findUserLog(String log){
+        UsersEntity user= new UsersEntity();
+        for (int i = 0; i < findAllUsers().size(); i++) {
+            if (findAllUsers().get(i).getLogin().equals(log)){
+                user = findAllUsers().get(i);
+                break;
+            }
+        }
+        return user;
+    }
     public static UsersEntity findUser(int id) {
         return usersDAO.findById(id);
     }

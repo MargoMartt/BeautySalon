@@ -9,10 +9,7 @@ import Entities.RoleEntity;
 import Entities.UsersEntity;
 import Enums.Roles;
 import Start.Client;
-import TCP.RegistrationPayload;
-import TCP.Request;
-import TCP.RequestType;
-import TCP.Response;
+import TCP.*;
 import TCP.RegistrationPayload;
 import Utility.ClientSocket;
 import com.google.gson.Gson;
@@ -35,6 +32,9 @@ public class RegistrationController {
     private URL location;
 
     @FXML
+    private Label response;
+
+    @FXML
     private Button back;
 
     @FXML
@@ -49,15 +49,17 @@ public class RegistrationController {
     @FXML
     private Button register;
 
-    @FXML
-    private ComboBox<String> roles;
+//    @FXML
+//    private ComboBox<String> roles;
 
     @FXML
     private TextField surname;
 
     public RegistrationController() throws IOException, ClassNotFoundException {
-
     }
+
+    private Response resp;
+
 
     @FXML
     void onBackButtonClick(ActionEvent event) throws IOException {
@@ -79,38 +81,39 @@ public class RegistrationController {
         payload.setUserSurname(surname.getText());
         payload.setLogin(login.getText());
         payload.setPassword(password.getText());
-        for (Roles r : Roles.values()) {
-            if (r.getValue() == roles.getValue()) {
-               int id = r.getId();
-                payload.setRole(id);
-            }
-        }
-        System.out.println(payload.toString());
+//        for (Roles r : Roles.values()) {
+//            if (r.getValue() == roles.getValue()) {
+//               int id = r.getId();
+//                payload.setRole(id);
+//            }
+//        }
 
         Request request = new Request(RequestType.REGISTER, payload);
         ClientSocket.send(request);
-        ClientSocket.listen();
-//        register.getScene().getWindow().hide();
-//        FXMLLoader loader = new FXMLLoader();
-//        loader.setLocation(getClass().getClassLoader().getResource("main.fxml"));
-//
-//        loader.load();
-//        Parent root = loader.getRoot();
-//        Stage stage = new Stage();
-//        stage.setScene(new Scene(root));
-//        stage.show();
-
-//        Response response = new Gson().fromJson()
+        resp = ClientSocket.listen();
+        if (resp.getResponseType().equals(ResponseType.Ok)) {
+            register.getScene().getWindow().hide();
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getClassLoader().getResource("main.fxml"));
+            loader.load();
+            Parent root = loader.getRoot();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } else {
+            System.out.println(new Gson().fromJson(resp.getResponseMessage(), Response.class));
+            response.setText(resp.getResponseMessage());
+        }
     }
 
     @FXML
     void initialize() {
-        ArrayList<String> list = new ArrayList<>();
-        list.add((Roles.ADMIN.getValue()));
-        System.out.println(Roles.ADMIN.getValue());
-        list.add((Roles.VISITOR.getValue()));
-        list.add((Roles.SALON_ADMIN.getValue()));
-        roles.setItems(FXCollections.observableList(list));
+//        ArrayList<String> list = new ArrayList<>();
+//        list.add((Roles.ADMIN.getValue()));
+//        System.out.println(Roles.ADMIN.getValue());
+//        list.add((Roles.VISITOR.getValue()));
+//        list.add((Roles.SALON_ADMIN.getValue()));
+//        roles.setItems(FXCollections.observableList(list));
     }
 
 }

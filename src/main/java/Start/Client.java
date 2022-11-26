@@ -1,5 +1,9 @@
 package Start;
 
+import Entities.UsersEntity;
+import Entities.UsersHasRoleEntity;
+import Services.RoleHasUsersService;
+import Services.UsersService;
 import Utility.ClientSocket;
 import Utility.ClientThread;
 import javafx.application.Application;
@@ -21,6 +25,12 @@ public class Client extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
+        UsersEntity admin = new UsersEntity();
+        admin.setUserName("Маргарита");
+        admin.setUserSurname("Мартинкевич");
+        admin.setLogin("ritamart");
+        admin.setPassword("ritamart");
+
         System.out.println("Start");
         ClientSocket.setInstance();
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("main.fxml"));
