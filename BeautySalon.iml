@@ -4,7 +4,7 @@
     <facet type="hibernate" name="Hibernate">
       <configuration>
         <datasource-map>
-          <unit-entry name="hibernate.cfg.xml" />
+          <unit-entry name="hibernate.cfg.xml" value="183ec30e-7a78-44d7-b82e-6333ec4137f6" />
           <unit-entry name="record:hibernate.cfg.xml" value="892af46c-aa7d-4411-bd4d-6eeac606bb00" />
         </datasource-map>
         <naming-strategy-map />

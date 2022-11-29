@@ -6,9 +6,7 @@ import Entities.UsersHasRoleEntity;
 import Services.RoleHasUsersService;
 import Services.RoleService;
 import Services.UsersService;
-import TCP.Request;
-import TCP.Response;
-import TCP.ResponseType;
+import TCP.*;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -16,6 +14,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class ClientThread implements Runnable {
     private Socket clientSocket;
@@ -81,10 +80,41 @@ public class ClientThread implements Runnable {
 
                         if (!isPasswordValid)
                             response = new Response(ResponseType.ERROR, "Неверный логин или пароль");
-                        else
-                            response = new Response(ResponseType.Ok, respUser);
+                        else {
+                            int id = 0;
+                            for (int i = 0; i < RoleHasUsersService.findAllRoles().size(); i++) {
+                                if (RoleHasUsersService.findAllRoles().get(i).getUsersIdUser() == respUser.getIdUser()) {
+                                    id = RoleHasUsersService.findAllRoles().get(i).getRoleIdRole();
+                                    break;
+                                }
+                            }
+                            RegistrationPayload userData = new RegistrationPayload(id, user.getUserName(), user.getUserSurname(), user.getLogin(), user.getPassword());
+                            response = new Response(ResponseType.Ok, userData);
+                        }
 
                         outputStream.writeObject(new Gson().toJson(response));
+                        break;
+                    }
+                    case VIEW_USERS: {
+                        UserData userData = new UserData();
+                        for (UsersEntity us : UsersService.findAllUsers()) {
+                            RegistrationPayload user = new RegistrationPayload();
+                            user.setUserName(us.getUserName());
+                            user.setUserSurname(us.getUserSurname());
+                            user.setLogin(us.getLogin());
+                            user.setPassword(us.getPassword());
+                            for (int i = 0; i < RoleHasUsersService.findAllRoles().size(); i++) {
+                                if (RoleHasUsersService.findAllRoles().get(i).getUsersIdUser() == us.getIdUser()) {
+                                    user.setIdRole(RoleHasUsersService.findAllRoles().get(i).getRoleIdRole());
+                                    break;
+                                } else user.setIdRole(0);
+                            }
+                            userData.setData(user);
+                        }
+                        response = new Response<>(ResponseType.Ok, userData);
+                        outputStream.writeObject(new Gson().toJson(response));
+                        System.out.println(response.getResponseMessage());
+                        break;
                     }
                 }
                 inputStream = new ObjectInputStream(clientSocket.getInputStream());

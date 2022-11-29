@@ -21,8 +21,19 @@ public class UsersEntity {
     @Basic
     @Column(name = "password", nullable = true, length = 45)
     private String password;
+    @Basic
+    @Column(name = "balance", nullable = true, length = 45)
+    private String balance;
     @OneToMany(mappedBy = "usersIdUser")
     private Collection<UsersHasRoleEntity> usersHasRolesByIdUser;
+
+    public String getBalance() {
+        return balance;
+    }
+
+    public void setBalance(String balance) {
+        this.balance = balance;
+    }
 
     public UsersEntity() {
     }
@@ -83,6 +94,7 @@ public class UsersEntity {
                 ", userSurname='" + userSurname + '\'' +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
+                ", balance='" + balance +
                 '}';
     }
 }

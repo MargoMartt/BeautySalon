@@ -3,6 +3,7 @@ package TCP;
 public enum RequestType {
     REGISTER,
     LOGIN,
+    VIEW_USERS,
     ADD_MASTER,
     UPDATE_MASTER,
     DELETE_MASTER,

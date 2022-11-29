@@ -13,7 +13,7 @@ public class ClientSocket {
     private static Socket instance;
 
     public static void setInstance() throws IOException {
-        Socket client = new Socket("127.0.0.1", 2525);
+        Socket client = new Socket("127.0.0.1", 2526);
         instance = client;
     }
 

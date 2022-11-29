@@ -17,7 +17,7 @@ public class MainServer {
 
 
     public static void main(String[] args) throws IOException {
-        serverSocket = new ServerSocket(2525);
+        serverSocket = new ServerSocket(2526);
         while (true) {
             System.out.println("Hi");
             for (Socket socket : sockets) {

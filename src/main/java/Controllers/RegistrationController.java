@@ -49,6 +49,8 @@ public class RegistrationController {
     @FXML
     private Button register;
 
+    @FXML
+    private TextField balance;
 //    @FXML
 //    private ComboBox<String> roles;
 
@@ -81,6 +83,7 @@ public class RegistrationController {
         payload.setUserSurname(surname.getText());
         payload.setLogin(login.getText());
         payload.setPassword(password.getText());
+        payload.setBalance(balance.getText());
 //        for (Roles r : Roles.values()) {
 //            if (r.getValue() == roles.getValue()) {
 //               int id = r.getId();

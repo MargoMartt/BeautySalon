@@ -57,7 +57,7 @@
             </DropShadow>
          </effect>
       </Button>
-      <Label fx:id="response" layoutX="379.0" layoutY="649.0" prefHeight="48.0" prefWidth="287.0" textFill="#14666b">
+      <Label fx:id="response" layoutX="433.0" layoutY="638.0" prefHeight="48.0" prefWidth="185.0" textFill="#b91e8a">
          <font>
             <Font name="Comic Sans MS" size="13.0" />
          </font>
