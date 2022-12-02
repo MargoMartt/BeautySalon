@@ -1,12 +1,12 @@
 package Controllers;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import Entities.UsersEntity;
+import Models.MasterData;
+import Models.ServiceData;
+import Models.UserData;
 import TCP.*;
 import Utility.ClientSocket;
 import com.google.gson.Gson;
@@ -21,6 +21,9 @@ import javafx.stage.Stage;
 
 public class AdminController {
     Response response;
+    public static ServiceData serviceData = new ServiceData();
+    public static UserData userData = new UserData();
+    public static MasterData masterData = new MasterData();
 
     @FXML
     private ResourceBundle resources;
@@ -66,8 +69,24 @@ public class AdminController {
     }
 
     @FXML
-    void Masters(ActionEvent event) {
+    void Masters(ActionEvent event) throws IOException, ClassNotFoundException {
+        Request request = new Request(RequestType.VIEW_MASTERS, "Посмотреть данные мастеров");
+        ClientSocket.send(request);
 
+        response = ClientSocket.listen();
+        System.out.println(response);
+        masterData = new Gson().fromJson(response.getResponseMessage(), MasterData.class);
+        System.out.println(masterData.toString());
+        System.out.println(response.getResponseMessage());
+
+        users.getScene().getWindow().hide();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getClassLoader().getResource("masters.fxml"));
+        loader.load();
+        Parent root = loader.getRoot();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     @FXML
@@ -81,21 +100,36 @@ public class AdminController {
     }
 
     @FXML
-    void Services(ActionEvent event) {
+    void Services(ActionEvent event) throws IOException, ClassNotFoundException {
+        Request request = new Request(RequestType.VIEW_SERVICES, "Посмотреть данные услуг");
+        ClientSocket.send(request);
 
+        response = ClientSocket.listen();
+        System.out.println(response);
+        serviceData = new Gson().fromJson(response.getResponseMessage(), ServiceData.class);
+        System.out.println(response.getResponseType());
+        System.out.println(response.getResponseMessage());
+
+        users.getScene().getWindow().hide();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getClassLoader().getResource("service.fxml"));
+        loader.load();
+        Parent root = loader.getRoot();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.show();
     }
-    public static UserData user = new UserData();
+
     @FXML
     void Users(ActionEvent event) throws IOException, ClassNotFoundException {
 
         Request request = new Request(RequestType.VIEW_USERS, "Посмотреть данные пользователей");
         ClientSocket.send(request);
 
-
         response = ClientSocket.listen();
         System.out.println(response);
-        user = new Gson().fromJson(response.getResponseMessage(), UserData.class);
-        System.out.println(user.toString());
+        userData = new Gson().fromJson(response.getResponseMessage(), UserData.class);
+        System.out.println(userData.toString());
         System.out.println(response.getResponseMessage());
 
         users.getScene().getWindow().hide();
@@ -113,7 +147,7 @@ public class AdminController {
     void onBackButtonClick(ActionEvent event) throws IOException {
         back.getScene().getWindow().hide();
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getClassLoader().getResource("admin.fxml"));
+        loader.setLocation(getClass().getClassLoader().getResource("login.fxml"));
 
         loader.load();
         Parent root = loader.getRoot();

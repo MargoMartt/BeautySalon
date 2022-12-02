@@ -29,7 +29,9 @@ public class ClientSocket {
     public static Response listen() throws IOException, ClassNotFoundException {
         ObjectInputStream objectInputStream = new ObjectInputStream(instance.getInputStream());
         String message = String.valueOf(objectInputStream.readObject());
+        System.out.println(message);
         Response response = gson.fromJson(message, Response.class);
+        System.out.println(response);
         System.out.println(response.getResponseType());
         return response;
     }

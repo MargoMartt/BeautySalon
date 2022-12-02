@@ -12,10 +12,16 @@ public class RoleHasUsersDAO {
         return HibernateSessionFactory.getSessionFactory().openSession().get(UsersHasRoleEntity.class, id);
     }
 
-    public void save(UsersHasRoleEntity role) {
-        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+    public void x(UsersHasRoleEntity role, Session session) {
         Transaction transaction = session.beginTransaction();
         session.save(role);
+        transaction.commit();
+    }
+
+    public void save(UsersHasRoleEntity role) {
+        Session session = HibernateSessionFactory.getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        session.saveOrUpdate(role);
         transaction.commit();
         session.close();
     }

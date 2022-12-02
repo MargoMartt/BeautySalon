@@ -12,11 +12,11 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1097.0" style="-fx-background-image: url('img/register.png');" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.AllUsersController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1097.0" style="-fx-background-image: url('img/register.png');" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MastersController">
    <children>
       <ImageView fitHeight="780.0" fitWidth="1097.0">
          <image>
-            <Image url="@img/admin.png" />
+            <Image url="@img/masters.png" />
          </image>
       </ImageView>
       <Button fx:id="back" layoutX="35.0" layoutY="411.0" mnemonicParsing="false" onAction="#onBackButtonClick" opacity="0.0" prefHeight="59.0" prefWidth="57.0" style="-fx-background-image: url('img/back.png'); -fx-background-color: yellow; -fx-border-radius: 4;" textFill="WHITE" />
@@ -25,21 +25,21 @@
             <Image url="@img/back.png" />
          </image>
       </ImageView>
-      <TableView fx:id="table" layoutX="152.0" layoutY="205.0" onMouseClicked="#selectUser" prefHeight="498.0" prefWidth="843.0">
-        <columns>
-          <TableColumn fx:id="name" prefWidth="154.0" text="Имя" />
-          <TableColumn fx:id="surname" prefWidth="188.0" text="Фамилия" />
-            <TableColumn fx:id="login" prefWidth="178.0" text="Логин" />
-            <TableColumn fx:id="password" prefWidth="160.0" text="Пароль" />
-            <TableColumn fx:id="role" prefWidth="162.0" text="Роль" />
-        </columns>
+      <TableView fx:id="table" layoutX="190.0" layoutY="203.0" onMouseClicked="#selectMaster" prefHeight="498.0" prefWidth="718.0">
+         <columns>
+            <TableColumn fx:id="name" prefWidth="152.0" text="Имя" />
+            <TableColumn fx:id="surname" prefWidth="141.0" text="Фамилия" />
+            <TableColumn fx:id="activity" prefWidth="140.0" text="Специализация" />
+            <TableColumn fx:id="experience" prefWidth="109.0" text="Опыт работы" />
+            <TableColumn fx:id="service" prefWidth="175.0" text="Услуги" />
+         </columns>
       </TableView>
       <Label fx:id="adminData" layoutX="487.0" layoutY="86.0" prefHeight="27.0" prefWidth="173.0" style="-fx-text-alignment: centre;" textAlignment="CENTER" textFill="#7c6c72" textOverrun="CLIP">
          <font>
             <Font name="Comic Sans MS" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="edit" layoutX="422.0" layoutY="167.0" mnemonicParsing="false" onAction="#EditUser" prefHeight="18.0" prefWidth="131.0" style="-fx-background-color: E8E9E9;" text="Изменить" textFill="#7c7c7c">
+      <Button fx:id="edit" layoutX="934.0" layoutY="397.0" mnemonicParsing="false" onAction="#EditMaster" prefHeight="18.0" prefWidth="131.0" style="-fx-background-color: E8E9E9;" text="Изменить" textFill="#7c7c7c">
          <font>
             <Font name="SansSerif Regular" size="14.0" />
          </font>
@@ -54,7 +54,22 @@
             </DropShadow>
          </effect>
       </Button>
-      <Button fx:id="delete" layoutX="595.0" layoutY="167.0" mnemonicParsing="false" onAction="#DeleteUser" prefHeight="26.0" prefWidth="131.0" style="-fx-background-color: E8E9E9;" text="Удалить" textFill="#7c7c7c">
+      <Button fx:id="delete" layoutX="934.0" layoutY="441.0" mnemonicParsing="false" onAction="#DeleteMaster" prefHeight="26.0" prefWidth="131.0" style="-fx-background-color: E8E9E9;" text="Удалить" textFill="#7c7c7c">
+         <font>
+            <Font name="SansSerif Regular" size="14.0" />
+         </font>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <effect>
+            <DropShadow offsetY="5.0">
+               <color>
+                  <Color red="0.6762914061546326" green="0.7857862114906311" blue="0.8026315569877625" />
+               </color>
+            </DropShadow>
+         </effect>
+      </Button>
+      <Button fx:id="add" layoutX="934.0" layoutY="353.0" mnemonicParsing="false" onAction="#AddMaster" prefHeight="18.0" prefWidth="131.0" style="-fx-background-color: E8E9E9;" text="Добавить" textFill="#7c7c7c">
          <font>
             <Font name="SansSerif Regular" size="14.0" />
          </font>

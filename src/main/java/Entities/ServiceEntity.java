@@ -8,14 +8,14 @@ import java.math.BigInteger;
 public class ServiceEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "servise_id", nullable = false)
-    private int serviseId;
+    @Column(name = "service_id", nullable = false)
+    private int serviceId;
     @Basic
     @Column(name = "service_name", nullable = true, length = 45)
     private String serviceName;
     @Basic
     @Column(name = "service_price", nullable = true, precision = 0)
-    private BigInteger servicePrice;
+    private Double servicePrice;
     @Basic
     @Column(name = "master_id", nullable = false)
     private int masterId;
@@ -23,12 +23,12 @@ public class ServiceEntity {
     public ServiceEntity() {
     }
 
-    public int getServiseId() {
-        return serviseId;
+    public int getserviceId() {
+        return serviceId;
     }
 
-    public void setServiseId(int serviseId) {
-        this.serviseId = serviseId;
+    public void setserviceId(int serviceId) {
+        this.serviceId = serviceId;
     }
 
     public String getServiceName() {
@@ -39,11 +39,11 @@ public class ServiceEntity {
         this.serviceName = serviceName;
     }
 
-    public BigInteger getServicePrice() {
+    public Double getServicePrice() {
         return servicePrice;
     }
 
-    public void setServicePrice(BigInteger servicePrice) {
+    public void setServicePrice(Double servicePrice) {
         this.servicePrice = servicePrice;
     }
 

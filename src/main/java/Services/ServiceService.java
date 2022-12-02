@@ -2,32 +2,33 @@ package Services;
 
 import DAO.ServiceDAO;
 import Entities.ServiceEntity;
+import Entities.UsersEntity;
 
 import java.util.ArrayList;
 
 public class ServiceService {
-    private ServiceDAO serviceDAO = new ServiceDAO();
+    private static ServiceDAO serviceDAO = new ServiceDAO();
 
     public ServiceService() {
     }
 
-    public ServiceEntity findService(int id) {
+    public static ServiceEntity findService(int id) {
         return serviceDAO.findById(id);
     }
 
-    public void saveService(ServiceEntity service) {
+    public static void saveService(ServiceEntity service) {
         serviceDAO.save(service);
     }
 
-    public void deleteService(ServiceEntity service) {
+    public static void deleteService(ServiceEntity service) {
         serviceDAO.delete(service);
     }
 
-    public void updateService(ServiceEntity service) {
+    public static void updateService(ServiceEntity service) {
         serviceDAO.update(service);
     }
 
-    public ArrayList<ServiceEntity> findAllServices() {
+    public static ArrayList<ServiceEntity> findAllServices() {
         return serviceDAO.findAll();
     }
 

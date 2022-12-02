@@ -3,8 +3,7 @@ package Controllers;
 
 import Entities.UsersEntity;
 import Entities.UsersHasRoleEntity;
-import Enums.Roles;
-import Services.RoleHasUsersService;
+import Models.User;
 import TCP.*;
 import Utility.ClientSocket;
 import com.google.gson.Gson;
@@ -20,7 +19,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class LoginController {
     Response resp;
@@ -65,7 +63,7 @@ public class LoginController {
 
         resp = ClientSocket.listen();
         if (resp.getResponseType().equals(ResponseType.Ok)) {
-            RegistrationPayload userData =  new Gson().fromJson(resp.getResponseMessage(), RegistrationPayload.class);
+            User userData =  new Gson().fromJson(resp.getResponseMessage(), User.class);
 
 //            ArrayList<UsersHasRoleEntity> roles = RoleHasUsersService.findAllRoles();
 //            System.out.println(roles);

@@ -2,6 +2,7 @@ package Services;
 
 import DAO.UsersDAO;
 import Entities.UsersEntity;
+import org.hibernate.Session;
 
 import java.util.ArrayList;
 

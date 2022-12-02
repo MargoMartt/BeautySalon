@@ -24,14 +24,14 @@ public class RecordEntity {
     @Column(name = "id_user", insertable = false, updatable = false, nullable = false)
     private int idUser;
     @Basic
-    @Column(name = "servise_id", insertable = false, updatable = false, nullable = false)
-    private int serviseId;
+    @Column(name = "service_id", insertable = false, updatable = false, nullable = false)
+    private int serviceId;
     @ManyToOne
     @JoinColumn(name = "id_user", referencedColumnName = "id_user", nullable = false)
     private UsersEntity usersByIdUser;
     @ManyToOne
-    @JoinColumn(name = "servise_id", referencedColumnName = "servise_id", nullable = false)
-    private ServiceEntity serviceByServiseId;
+    @JoinColumn(name = "service_id", referencedColumnName = "service_id", nullable = false)
+    private ServiceEntity serviceByserviceId;
 
     public RecordEntity() {
     }
@@ -76,12 +76,12 @@ public class RecordEntity {
         this.idUser = idUser;
     }
 
-    public int getServiseId() {
-        return serviseId;
+    public int getserviceId() {
+        return serviceId;
     }
 
-    public void setServiseId(int serviseId) {
-        this.serviseId = serviseId;
+    public void setserviceId(int serviceId) {
+        this.serviceId = serviceId;
     }
 
     public UsersEntity getUsersByIdUser() {
@@ -92,11 +92,11 @@ public class RecordEntity {
         this.usersByIdUser = usersByIdUser;
     }
 
-    public ServiceEntity getServiceByServiseId() {
-        return serviceByServiseId;
+    public ServiceEntity getServiceByserviceId() {
+        return serviceByserviceId;
     }
 
-    public void setServiceByServiseId(ServiceEntity serviceByServiseId) {
-        this.serviceByServiseId = serviceByServiseId;
+    public void setServiceByserviceId(ServiceEntity serviceByserviceId) {
+        this.serviceByserviceId = serviceByserviceId;
     }
 }

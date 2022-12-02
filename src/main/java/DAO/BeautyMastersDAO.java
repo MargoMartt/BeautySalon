@@ -1,6 +1,7 @@
 package DAO;
 
 import Entities.BeautyMastersEntity;
+import Entities.UsersEntity;
 import Utility.HibernateSessionFactory;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -8,11 +9,15 @@ import org.hibernate.Transaction;
 import java.util.ArrayList;
 
 public class BeautyMastersDAO {
-    public BeautyMastersEntity findById(int id) {
-        return HibernateSessionFactory.getSessionFactory().openSession().get(BeautyMastersEntity.class, id);
+    public static BeautyMastersEntity findById(int id) {
+
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        BeautyMastersEntity masters = session.get(BeautyMastersEntity.class, id);
+        session.close();
+        return masters;
     }
 
-    public void save(BeautyMastersEntity master) {
+    public static void save(BeautyMastersEntity master) {
         Session session = HibernateSessionFactory.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         session.save(master);
@@ -20,7 +25,7 @@ public class BeautyMastersDAO {
         session.close();
     }
 
-    public void update(BeautyMastersEntity master) {
+    public static void update(BeautyMastersEntity master) {
         Session session = HibernateSessionFactory.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         session.update(master);
@@ -28,7 +33,7 @@ public class BeautyMastersDAO {
         session.close();
     }
 
-    public void delete(BeautyMastersEntity master) {
+    public static void delete(BeautyMastersEntity master) {
         Session session = HibernateSessionFactory.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         session.delete(master);
@@ -36,10 +41,11 @@ public class BeautyMastersDAO {
         session.close();
     }
 
-    public ArrayList<BeautyMastersEntity> findAll() {
-        ArrayList<BeautyMastersEntity> accountingEntities = new ArrayList<BeautyMastersEntity>();
-        return (ArrayList<BeautyMastersEntity>) HibernateSessionFactory.getSessionFactory().openSession().createQuery("from BeautyMastersEntity ").list();
-
+    public static ArrayList<BeautyMastersEntity> findAll() {
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        ArrayList<BeautyMastersEntity> masters = (ArrayList<BeautyMastersEntity>) session.createQuery("from BeautyMastersEntity ").list();
+        session.close();
+        return masters;
     }
 
 }

@@ -1,25 +1,39 @@
 package Controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import TCP.RegistrationPayload;
-import TCP.UserData;
+import Models.User;
+import Models.UserData;
+import TCP.*;
+import Utility.ClientSocket;
+import com.google.gson.Gson;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
-import static Controllers.AdminController.user;
+import static Controllers.AdminController.userData;
 
 public class AllUsersController {
-    private ObservableList<RegistrationPayload> userList = FXCollections.observableArrayList();
+    static User userModal = new User();
+    private ObservableList<User> userList = FXCollections.observableArrayList();
+
+    @FXML
+    private Button delete;
+
+    @FXML
+    private Button edit;
 
     @FXML
     private ResourceBundle resources;
@@ -37,55 +51,99 @@ public class AllUsersController {
     private Button back;
 
     @FXML
-    private TableColumn<RegistrationPayload, String> login;
+    private TableColumn<User, String> login;
 
     @FXML
-    private TableColumn<RegistrationPayload, String> name;
+    private TableColumn<User, String> name;
 
     @FXML
-    private TableColumn<RegistrationPayload, String> password;
+    private TableColumn<User, String> password;
 
     @FXML
-    private TableColumn<RegistrationPayload, Integer> role;
+    private TableColumn<User, String> role;
 
     @FXML
-    private TableColumn<RegistrationPayload, String> surname;
+    private TableColumn<User, String> surname;
 
     @FXML
-    private TableView<RegistrationPayload> table;
+    private TableView<User> table;
 
     @FXML
-    void onBackButtonClick(ActionEvent event) {
+    void onBackButtonClick(ActionEvent event) throws IOException {
+        back.getScene().getWindow().hide();
+        loader.setLocation(getClass().getClassLoader().getResource("admin.fxml"));
 
+        loader.load();
+        Parent root = loader.getRoot();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
-    ArrayList<RegistrationPayload> users = user.getData();
+    @FXML
+    void DeleteUser(ActionEvent event) throws IOException, ClassNotFoundException {
+        Response response;
+        Request request = new Request(RequestType.DELETE_USER, userModal);
+        ClientSocket.send(request);
+        response = ClientSocket.listen();
+        System.out.println(response.getResponseMessage());
+        userList.clear();
+        userData = new Gson().fromJson(response.getResponseMessage(), UserData.class);
+        createTable(userData.getData());
+    }
+
+    FXMLLoader loader = new FXMLLoader();
+    private Stage stage = new Stage();
+
+    @FXML
+    void EditUser(ActionEvent event) {
+        try {
+            stage = new Stage();
+            Parent root = FXMLLoader.load(getClass().getResource("/edituser.fxml"));
+            stage.setTitle("Редактирование записи");
+            stage.setMinHeight(500);
+            stage.setMinWidth(500);
+            stage.setResizable(false);
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(((Node) event.getSource()).getScene().getWindow());
+            stage.showAndWait();
+            userList.clear();
+            createTable(userData.getData());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    ArrayList<User> users = userData.getData();
 
     @FXML
     void initialize() {
-//        RegistrationPayload registrationPayload = new RegistrationPayload();
-        initData();
-        for (int i = 0; i < users.size(); i++) {
-            System.out.println(user.getData().get(i).getUserName());
-            surname.setCellValueFactory(new PropertyValueFactory<>("userSurname"));
-            name.setCellValueFactory(new PropertyValueFactory<RegistrationPayload, String>("userName"));
-            login.setCellValueFactory(new PropertyValueFactory<RegistrationPayload, String>("login"));
-            password.setCellValueFactory(new PropertyValueFactory<RegistrationPayload, String>("password"));
-//        role.setCellValueFactory(new PropertyValueFactory<UserData, Integer>(registrationPayload.getIdRole());
-        }
-        table.setItems(userList);
-
+        createTable(users);
     }
 
-    private void initData() {
+    void createTable(ArrayList<User> users) {
+        initData(users);
+        for (int i = 0; i < users.size(); i++) {
+            surname.setCellValueFactory(new PropertyValueFactory<User, String>("userSurname"));
+            name.setCellValueFactory(new PropertyValueFactory<User, String>("userName"));
+            login.setCellValueFactory(new PropertyValueFactory<User, String>("login"));
+            password.setCellValueFactory(new PropertyValueFactory<User, String>("password"));
+            role.setCellValueFactory(new PropertyValueFactory<User, String>("role"));
+        }
+        table.setItems(userList);
+    }
+
+    private void initData(ArrayList<User> users) {
 
         for (int i = 0; i < users.size(); i++) {
             userList.add(users.get(i));
         }
-//        for (UserData us : user.getData()) {
-//            userList.add(us);
-//        }
-
     }
 
+    public void selectUser(javafx.scene.input.MouseEvent mouseEvent) {
+        User selectUser = (User) table.getSelectionModel().getSelectedItem();
+        userModal = selectUser;
+    }
 }

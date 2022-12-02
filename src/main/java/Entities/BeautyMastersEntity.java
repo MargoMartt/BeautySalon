@@ -21,7 +21,7 @@ public class BeautyMastersEntity {
     @Basic
     @Column(name = "work_experience", nullable = true)
     private Integer workExperience;
-    @OneToMany(mappedBy = "serviseId")
+    @OneToMany(mappedBy = "serviceId")
     private Collection<ServiceEntity> servicesByMasterId;
 
     public BeautyMastersEntity() {
@@ -73,5 +73,16 @@ public class BeautyMastersEntity {
 
     public void setServicesByMasterId(Collection<ServiceEntity> servicesByMasterId) {
         this.servicesByMasterId = servicesByMasterId;
+    }
+
+    @Override
+    public String toString() {
+        return "BeautyMastersEntity{" +
+                "masterId=" + masterId +
+                ", masterSurname='" + masterSurname + '\'' +
+                ", masterName='" + masterName + '\'' +
+                ", activity='" + activity + '\'' +
+                ", workExperience=" + workExperience +
+                '}';
     }
 }

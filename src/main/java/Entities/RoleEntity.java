@@ -12,7 +12,7 @@ public class RoleEntity {
     @Basic
     @Column(name = "role_name", nullable = true, length = 45)
     private String roleName;
-    @OneToMany(mappedBy = "roleIdRole")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "roleIdRole")
     private Collection<UsersHasRoleEntity> usersHasRolesByIdRole;
 
     public RoleEntity() {

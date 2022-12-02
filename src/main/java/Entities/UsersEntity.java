@@ -24,7 +24,7 @@ public class UsersEntity {
     @Basic
     @Column(name = "balance", nullable = true, length = 45)
     private String balance;
-    @OneToMany(mappedBy = "usersIdUser")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usersIdUser", cascade = CascadeType.ALL)
     private Collection<UsersHasRoleEntity> usersHasRolesByIdUser;
 
     public String getBalance() {
@@ -97,4 +97,5 @@ public class UsersEntity {
                 ", balance='" + balance +
                 '}';
     }
+
 }

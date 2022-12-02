@@ -2,19 +2,11 @@ package Controllers;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import Entities.RoleEntity;
-import Entities.UsersEntity;
-import Enums.Roles;
-import Start.Client;
 import TCP.*;
-import TCP.RegistrationPayload;
 import Utility.ClientSocket;
 import com.google.gson.Gson;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -61,12 +53,11 @@ public class RegistrationController {
     }
 
     private Response resp;
-
+    private FXMLLoader loader = new FXMLLoader();
 
     @FXML
     void onBackButtonClick(ActionEvent event) throws IOException {
         back.getScene().getWindow().hide();
-        FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource("main.fxml"));
 
         loader.load();
@@ -84,19 +75,12 @@ public class RegistrationController {
         payload.setLogin(login.getText());
         payload.setPassword(password.getText());
         payload.setBalance(balance.getText());
-//        for (Roles r : Roles.values()) {
-//            if (r.getValue() == roles.getValue()) {
-//               int id = r.getId();
-//                payload.setRole(id);
-//            }
-//        }
 
         Request request = new Request(RequestType.REGISTER, payload);
         ClientSocket.send(request);
         resp = ClientSocket.listen();
         if (resp.getResponseType().equals(ResponseType.Ok)) {
             register.getScene().getWindow().hide();
-            FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getClassLoader().getResource("main.fxml"));
             loader.load();
             Parent root = loader.getRoot();
@@ -111,12 +95,6 @@ public class RegistrationController {
 
     @FXML
     void initialize() {
-//        ArrayList<String> list = new ArrayList<>();
-//        list.add((Roles.ADMIN.getValue()));
-//        System.out.println(Roles.ADMIN.getValue());
-//        list.add((Roles.VISITOR.getValue()));
-//        list.add((Roles.SALON_ADMIN.getValue()));
-//        roles.setItems(FXCollections.observableList(list));
     }
 
 }

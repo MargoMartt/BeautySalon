@@ -1,7 +1,10 @@
 package Services;
 
 import DAO.RoleHasUsersDAO;
+import Entities.RoleEntity;
+import Entities.UsersEntity;
 import Entities.UsersHasRoleEntity;
+import org.hibernate.Session;
 
 import java.util.ArrayList;
 
@@ -9,6 +12,10 @@ public class RoleHasUsersService {
     private static RoleHasUsersDAO roleDAO = new RoleHasUsersDAO();
 
     public RoleHasUsersService() {
+    }
+
+    public static void x(UsersHasRoleEntity role, Session session) {
+        roleDAO.x(role, session);
     }
 
     public UsersHasRoleEntity findRole(int id) {

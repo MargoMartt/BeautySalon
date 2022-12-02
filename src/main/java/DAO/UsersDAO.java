@@ -1,18 +1,20 @@
 package DAO;
 
-import Entities.BeautyMastersEntity;
-import Entities.RecordEntity;
-import Entities.ServiceEntity;
-import Entities.UsersEntity;
+import Entities.*;
 import Utility.HibernateSessionFactory;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class UsersDAO {
+
     public UsersEntity findById(int id) {
-        return HibernateSessionFactory.getSessionFactory().openSession().get(UsersEntity.class, id);
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        UsersEntity users = session.get(UsersEntity.class, id);
+        session.close();
+        return users;
     }
 
     public int save(UsersEntity users) {
@@ -41,9 +43,10 @@ public class UsersDAO {
     }
 
     public ArrayList<UsersEntity> findAll() {
-        ArrayList<UsersEntity> usersEntities = new ArrayList<UsersEntity>();
-
-        return (ArrayList<UsersEntity>) HibernateSessionFactory.getSessionFactory().openSession().createQuery("from UsersEntity ").list();
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        ArrayList<UsersEntity> users = (ArrayList<UsersEntity>) session.createQuery("from UsersEntity ").list();
+        session.close();
+        return users;
     }
 
 }
