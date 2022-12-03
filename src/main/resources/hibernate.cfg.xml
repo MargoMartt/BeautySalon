@@ -20,6 +20,7 @@
       <mapping class="Entities.ServiceEntity"/>
 <!--      <mapping resource="ServiceEntity.hbm.xml"/>-->
       <mapping class="Entities.UsersEntity"/>
+    <mapping class="Entities.BonusEntity"/>
 <!--      <mapping resource="UsersEntity.hbm.xml"/>-->
       <!-- <property name="connection.username"/> -->
     <!-- <property name="connection.password"/> -->

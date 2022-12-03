@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import Models.FinanceData;
 import Models.MasterData;
 import Models.ServiceData;
 import Models.UserData;
@@ -21,6 +22,7 @@ import javafx.stage.Stage;
 
 public class AdminController {
     Response response;
+    public static FinanceData financeData = new FinanceData();
     public static ServiceData serviceData = new ServiceData();
     public static UserData userData = new UserData();
     public static MasterData masterData = new MasterData();
@@ -41,7 +43,7 @@ public class AdminController {
     private Button back;
 
     @FXML
-    private Button discont;
+    private Button discount;
 
     @FXML
     private Button masters;
@@ -64,8 +66,24 @@ public class AdminController {
     }
 
     @FXML
-    void Discont(ActionEvent event) {
+    void Finance (ActionEvent event) throws IOException, ClassNotFoundException {
+        Request request = new Request(RequestType.FINANCE, "Посмотреть данные финансов");
+        ClientSocket.send(request);
 
+        response = ClientSocket.listen();
+        System.out.println(response);
+        financeData = new Gson().fromJson(response.getResponseMessage(), FinanceData.class);
+        System.out.println(financeData.toString());
+        System.out.println(response.getResponseMessage());
+
+        users.getScene().getWindow().hide();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getClassLoader().getResource("finance.fxml"));
+        loader.load();
+        Parent root = loader.getRoot();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     @FXML

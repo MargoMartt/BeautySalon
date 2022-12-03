@@ -88,7 +88,7 @@
             </DropShadow>
          </effect>
       </Button>
-      <Button fx:id="discont" layoutX="608.0" layoutY="335.0" mnemonicParsing="false" onAction="#Discont" prefHeight="50.0" prefWidth="385.0" style="-fx-background-color: E8E9E9;" text="Дисконтная программа" textFill="#7c7c7c">
+      <Button fx:id="finance" layoutX="608.0" layoutY="335.0" mnemonicParsing="false" onAction="#Finance" prefHeight="50.0" prefWidth="385.0" style="-fx-background-color: E8E9E9;" text="Финансы" textFill="#7c7c7c">
          <font>
             <Font name="SansSerif Regular" size="21.0" />
          </font>

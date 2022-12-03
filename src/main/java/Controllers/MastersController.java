@@ -86,7 +86,7 @@ public class MastersController {
             serviceData = new Gson().fromJson(response.getResponseMessage(), ServiceData.class);
 
             Parent root = FXMLLoader.load(getClass().getResource("/masteraction.fxml"));
-            stage.setTitle("Редактирование записи");
+            stage.setTitle("Добавление");
             stage.setMinHeight(500);
             stage.setMinWidth(500);
             stage.setResizable(false);

@@ -1,6 +1,7 @@
 package Utility;
 
 import Entities.BeautyMastersEntity;
+import Entities.ServiceEntity;
 import Entities.UsersEntity;
 import Entities.UsersHasRoleEntity;
 import Models.*;
@@ -118,11 +119,11 @@ public class ClientThread implements Runnable {
                         break;
                     }
                     case VIEW_MASTERS: {
-
                         MasterData masterData = ServerMethods.findAllMasters();
                         response = new Response<>(ResponseType.Ok, masterData);
                         outputStream.writeObject(new Gson().toJson(response));
                         System.out.println(response.getResponseMessage());
+                        System.out.println(masterData.getData().toString());
                         break;
                     }
                     case ADD_MASTER: {
@@ -131,17 +132,15 @@ public class ClientThread implements Runnable {
                         outputStream.writeObject(new Gson().toJson(response));
                         break;
                     }
-                    case CREATE_MASTER:{
+                    case CREATE_MASTER: {
                         BeautyMastersEntity mastersEntity = new BeautyMastersEntity();
                         Master master = gson.fromJson(requestMessage, Master.class);
-                        if (BeautyMastersService.isMaster(master.getMasterName(), master.getMasterSurname()) != null){
-                            System.out.println(BeautyMastersService.isMaster(master.getMasterName(), master.getMasterSurname()).toString());
+                        if (BeautyMastersService.findMaster(master.getMasterId()) != null) {
                             String answer = "Такой мастер уже существует";
                             response = new Response<>(ResponseType.ERROR, answer);
                             outputStream.writeObject(new Gson().toJson(response));
-                        }
-                        else{
-                            mastersEntity.setMasterName( master.getMasterName());
+                        } else {
+                            mastersEntity.setMasterName(master.getMasterName());
                             mastersEntity.setMasterSurname(master.getMasterSurname());
                             mastersEntity.setActivity(master.getActivity());
                             mastersEntity.setWorkExperience(master.getWorkExperience());
@@ -153,19 +152,17 @@ public class ClientThread implements Runnable {
                         break;
                     }
                     case UPDATE_MASTER: {
-                       MasterData masterD = gson.fromJson(requestMessage, MasterData.class);
-                       Master master = masterD.getData().get(0);
-                       Master updateMaster = masterD.getData().get(1);
-                       BeautyMastersEntity respMaser = BeautyMastersService.isMaster(master.getMasterName(), master.getMasterSurname());
+                        Master master = gson.fromJson(requestMessage, Master.class);
+                        BeautyMastersEntity respMaser = BeautyMastersService.findMaster(master.getMasterId());
 
-                       respMaser.setMasterName(updateMaster.getMasterName());
-                       respMaser.setWorkExperience(updateMaster.getWorkExperience());
-                       respMaser.setMasterSurname(updateMaster.getMasterSurname());
-                       respMaser.setActivity(updateMaster.getActivity());
+                        respMaser.setMasterName(master.getMasterName());
+                        respMaser.setWorkExperience(master.getWorkExperience());
+                        respMaser.setMasterSurname(master.getMasterSurname());
+                        respMaser.setActivity(master.getActivity());
 
-                       BeautyMastersService.updateMaster(respMaser);
+                        BeautyMastersService.updateMaster(respMaser);
 
-                       MasterData masterData = ServerMethods.findAllMasters();
+                        MasterData masterData = ServerMethods.findAllMasters();
                         response = new Response<>(ResponseType.Ok, masterData);
                         outputStream.writeObject(new Gson().toJson(response));
                         System.out.println(response.getResponseMessage());
@@ -173,7 +170,7 @@ public class ClientThread implements Runnable {
                     }
                     case DELETE_MASTER: {
                         Master master = gson.fromJson(requestMessage, Master.class);
-                        BeautyMastersEntity respMaster = BeautyMastersService.isMaster(master.getMasterName(), master.getMasterSurname());
+                        BeautyMastersEntity respMaster = BeautyMastersService.findMaster(master.getMasterId());
                         System.out.println(respMaster.toString());
                         BeautyMastersService.deleteMaster(respMaster);
 
@@ -186,6 +183,66 @@ public class ClientThread implements Runnable {
                     case VIEW_SERVICES: {
                         ServiceData serviceData = ServerMethods.findAllService();
                         response = new Response<>(ResponseType.Ok, serviceData);
+                        outputStream.writeObject(new Gson().toJson(response));
+                        System.out.println(response.getResponseMessage());
+                        break;
+                    }
+                    case ADD_SERVICE: {
+                        ServiceEntity serviceEntity = new ServiceEntity();
+                        Service service = gson.fromJson(requestMessage, Service.class);
+                        if (ServiceService.findServiceId(service.getMasterId()) != null) {
+                            String answer = "Такой мастер уже существует";
+                            response = new Response<>(ResponseType.ERROR, answer);
+                            outputStream.writeObject(new Gson().toJson(response));
+                        } else {
+                            serviceEntity.setMasterId(service.getMasterId());
+                            serviceEntity.setServiceName(service.getServiceName());
+                            serviceEntity.setServicePrice(service.getServicePrice());
+                            ServiceService.saveService(serviceEntity);
+
+                            ServiceData serviceData = ServerMethods.findAllService();
+                            response = new Response<>(ResponseType.Ok, serviceData);
+                            outputStream.writeObject(new Gson().toJson(response));
+                            System.out.println(response.getResponseMessage());
+                        }
+                        break;
+                    }
+                    case UPDATE_SERVICE: {
+                        Service service = gson.fromJson(requestMessage, Service.class);
+                        ServiceEntity respService = ServiceService.findServiceId(service.getServiceId());
+
+                        respService.setServiceName(service.getServiceName());
+                        respService.setServicePrice(service.getServicePrice());
+                        respService.setMasterId(service.getMasterId());
+
+                        ServiceService.updateService(respService);
+
+                        ServiceData serviceData = ServerMethods.findAllService();
+                        response = new Response<>(ResponseType.Ok, serviceData);
+                        outputStream.writeObject(new Gson().toJson(response));
+                        System.out.println(response.getResponseMessage());
+                        break;
+                    }
+                    case DELETE_SERVICE: {
+                        Service service = gson.fromJson(requestMessage, Service.class);
+                        ServiceEntity respService = ServiceService.findServiceId(service.getServiceId());
+                        ServiceService.deleteService(respService);
+
+                        ServiceData serviceData = ServerMethods.findAllService();
+                        response = new Response<>(ResponseType.Ok, serviceData);
+                        outputStream.writeObject(new Gson().toJson(response));
+                        System.out.println(response.getResponseMessage());
+                        break;
+                    }
+                    case MASTER_LIST: {
+                        MasterServiceData listData = ServerMethods.findListMasters();
+                        response = new Response<>(ResponseType.Ok, listData);
+                        outputStream.writeObject(new Gson().toJson(response));
+                        break;
+                    }
+                    case FINANCE:{
+                        FinanceData financeData = ServerMethods.findAllFinance();
+                        response = new Response<>(ResponseType.Ok, financeData);
                         outputStream.writeObject(new Gson().toJson(response));
                         System.out.println(response.getResponseMessage());
                         break;

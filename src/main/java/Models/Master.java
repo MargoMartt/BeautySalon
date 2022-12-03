@@ -79,4 +79,16 @@ public class Master {
 
     public Master() {
     }
+
+    @Override
+    public String toString() {
+        return "Master{" +
+                "masterId=" + masterId +
+                ", masterSurname='" + masterSurname + '\'' +
+                ", masterName='" + masterName + '\'' +
+                ", activity='" + activity + '\'' +
+                ", workExperience=" + workExperience +
+                ", serviceName='" + serviceName + '\'' +
+                '}';
+    }
 }

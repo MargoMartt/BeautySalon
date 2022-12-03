@@ -12,7 +12,7 @@ public class ServiceService {
     public ServiceService() {
     }
 
-    public static ServiceEntity findService(int id) {
+    public static ServiceEntity findServiceId(int id) {
         return serviceDAO.findById(id);
     }
 

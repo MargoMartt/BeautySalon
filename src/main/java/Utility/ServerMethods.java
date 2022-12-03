@@ -1,14 +1,12 @@
 package Utility;
 
 import Entities.BeautyMastersEntity;
+import Entities.BonusEntity;
 import Entities.ServiceEntity;
 import Entities.UsersEntity;
 import Enums.Roles;
 import Models.*;
-import Services.BeautyMastersService;
-import Services.RoleHasUsersService;
-import Services.ServiceService;
-import Services.UsersService;
+import Services.*;
 
 import java.util.ArrayList;
 
@@ -54,6 +52,7 @@ public class ServerMethods {
         MasterData masterData = new MasterData();
         for (BeautyMastersEntity masters : BeautyMastersService.findAllMasters()) {
             Master master = new Master();
+            master.setMasterId(masters.getMasterId());
             master.setMasterName(masters.getMasterName());
             master.setMasterSurname(masters.getMasterSurname());
             master.setActivity(masters.getActivity());
@@ -79,11 +78,23 @@ public class ServerMethods {
         return serviceData;
     }
 
+    public static MasterServiceData findListMasters() {
+        MasterServiceData listData = new MasterServiceData();
+        for (BeautyMastersEntity masters : BeautyMastersService.findAllMasters()) {
+            MasterService masterService = new MasterService();
+            masterService.setId(masters.getMasterId());
+            masterService.setMasterInfo(masters.getMasterSurname() + " " + masters.getMasterName());
+            listData.setData(masterService);
+        }
+        return listData;
+    }
+
     public static ServiceData findAllService() {
         ServiceData serviceData = new ServiceData();
         String master;
         for (ServiceEntity services : ServiceService.findAllServices()) {
             Service service = new Service();
+            service.setServiceId(services.getserviceId());
             service.setServiceName(services.getServiceName());
             service.setServicePrice(services.getServicePrice());
             for (BeautyMastersEntity masters : BeautyMastersService.findAllMasters()) {
@@ -92,8 +103,7 @@ public class ServerMethods {
                     master = masters.getMasterName() + " " + masters.getMasterSurname();
                     service.setMaster(master);
                     break;
-                }
-                else {
+                } else {
                     master = " - ";
                     service.setMaster(master);
                 }
@@ -101,5 +111,25 @@ public class ServerMethods {
             serviceData.setData(service);
         }
         return serviceData;
+    }
+
+
+    public static FinanceData findAllFinance(){
+        FinanceData financeData = new FinanceData();
+        for (UsersEntity users : UsersService.findAllUsers()){
+            Finance finance = new Finance();
+            finance.setUserId(users.getIdUser());
+            finance.setUserName(users.getUserName() + " " + users.getUserSurname());
+            finance.setBalance(users.getBalance());
+            for (BonusEntity bonus: BonusService.findAllBonus()) {
+                if (bonus.getIdUser() == users.getIdUser()){
+                    finance.setBonusId(bonus.getBonusId());
+                    finance.setDiscount(bonus.getDiscount());
+                    finance.setCertificate(bonus.getCertificate());
+                }
+            }
+            financeData.setData(finance);
+        }
+        return financeData;
     }
 }

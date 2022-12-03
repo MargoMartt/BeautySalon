@@ -56,14 +56,12 @@ public class EditMasterController {
     Master master = new Master();
     @FXML
     void onOkButtonClick(ActionEvent event) throws IOException, ClassNotFoundException {
-        masterData.getData().clear();
-        masterData.setData(masterModal);
+        master.setMasterId(masterModal.getMasterId());
         master.setMasterSurname(surname.getText());
         master.setMasterName(name.getText());
         master.setActivity(activity.getText());
         master.setWorkExperience(Integer.parseInt(experience.getText()));
-        masterData.setData(master);
-        Request request = new Request(RequestType.UPDATE_MASTER, masterData);
+        Request request = new Request(RequestType.UPDATE_MASTER, master);
         System.out.println(masterData.getData().toString());
         ClientSocket.send(request);
         response = ClientSocket.listen();

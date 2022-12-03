@@ -5,15 +5,18 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import Models.Master;
-import Models.Service;
-import Models.ServiceData;
+import Models.*;
+import TCP.Request;
+import TCP.RequestType;
 import TCP.Response;
+import Utility.ClientSocket;
+import com.google.gson.Gson;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -22,6 +25,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import static Controllers.AdminController.masterData;
@@ -30,6 +34,8 @@ import static Controllers.AdminController.serviceData;
 public class ServiceController {
     @FXML
     static Service serviceModal = new Service();
+
+    static MasterServiceData listMasters = new MasterServiceData();
 
     private ObservableList<Service> serviceList = FXCollections.observableArrayList();
 //    public static ServiceData serviceData = new ServiceData();
@@ -69,18 +75,65 @@ public class ServiceController {
     private TableView<Service> table;
 
     @FXML
-    void AddService(ActionEvent event) {
+    void AddService(ActionEvent event) throws ClassNotFoundException {
+        try {
+            Request request = new Request(RequestType.MASTER_LIST, "Список мастеров");
+            ClientSocket.send(request);
+            response = ClientSocket.listen();
+            System.out.println(response.getResponseMessage());
+            listMasters = new Gson().fromJson(response.getResponseMessage(), MasterServiceData.class);
+            stage = new Stage();
 
+            Parent root = FXMLLoader.load(getClass().getResource("/addservice.fxml"));
+            stage.setTitle("Добавление записи записи");
+            stage.setMinHeight(500);
+            stage.setMinWidth(500);
+            stage.setResizable(false);
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(((Node) event.getSource()).getScene().getWindow());
+            stage.showAndWait();
+
+            serviceList.clear();
+            createTable(serviceData.getData());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @FXML
+    void DeleteService(ActionEvent event) throws IOException, ClassNotFoundException {
+        Request request = new Request(RequestType.DELETE_SERVICE, serviceModal);
+        ClientSocket.send(request);
+        response = ClientSocket.listen();
+        System.out.println(response.getResponseMessage());
+        serviceData = new Gson().fromJson(response.getResponseMessage(), ServiceData.class);
+        serviceList.clear();
+        createTable(serviceData.getData());
     }
 
     @FXML
-    void DeleteService(ActionEvent event) {
+    void EditService(ActionEvent event) throws IOException, ClassNotFoundException {
+        Request request = new Request(RequestType.MASTER_LIST, "Список мастеров");
+        ClientSocket.send(request);
+        response = ClientSocket.listen();
+        System.out.println(response.getResponseMessage());
+        listMasters = new Gson().fromJson(response.getResponseMessage(), MasterServiceData.class);
 
-    }
-
-    @FXML
-    void EditService(ActionEvent event) {
-
+        stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("/editservice.fxml"));
+        stage.setTitle("Редактирование записи");
+        stage.setMinHeight(500);
+        stage.setMinWidth(500);
+        stage.setResizable(false);
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(((Node) event.getSource()).getScene().getWindow());
+        stage.showAndWait();
+        serviceList.clear();
+        createTable(serviceData.getData());
     }
 
     FXMLLoader loader = new FXMLLoader();
