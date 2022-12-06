@@ -35,7 +35,7 @@
             <Insets />
          </opaqueInsets>
       </Button>
-      <TextField fx:id="amount" layoutX="164.0" layoutY="124.0" prefHeight="59.0" prefWidth="287.0" promptText="Сумма пополнения баланса" style="-fx-background-color: E8E9E9; -fx-border-color: #c3c3c3; -fx-padding: 0 0 0 20; -fx-border-radius: 4;">
+      <TextField fx:id="amount" layoutX="164.0" layoutY="124.0" prefHeight="59.0" prefWidth="287.0" promptText="Баланс" style="-fx-background-color: E8E9E9; -fx-border-color: #c3c3c3; -fx-padding: 0 0 0 20; -fx-border-radius: 4;">
          <font>
             <Font name="SansSerif Regular" size="14.0" />
          </font>

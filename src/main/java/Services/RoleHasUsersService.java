@@ -14,10 +14,6 @@ public class RoleHasUsersService {
     public RoleHasUsersService() {
     }
 
-    public static void x(UsersHasRoleEntity role, Session session) {
-        roleDAO.x(role, session);
-    }
-
     public UsersHasRoleEntity findRole(int id) {
         return roleDAO.findById(id);
     }

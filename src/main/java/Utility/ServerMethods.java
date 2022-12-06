@@ -1,9 +1,6 @@
 package Utility;
 
-import Entities.BeautyMastersEntity;
-import Entities.BonusEntity;
-import Entities.ServiceEntity;
-import Entities.UsersEntity;
+import Entities.*;
 import Enums.Roles;
 import Models.*;
 import Services.*;
@@ -114,15 +111,15 @@ public class ServerMethods {
     }
 
 
-    public static FinanceData findAllFinance(){
+    public static FinanceData findAllFinance() {
         FinanceData financeData = new FinanceData();
-        for (UsersEntity users : UsersService.findAllUsers()){
+        for (UsersEntity users : UsersService.findAllUsers()) {
             Finance finance = new Finance();
             finance.setUserId(users.getIdUser());
             finance.setUserName(users.getUserName() + " " + users.getUserSurname());
             finance.setBalance(users.getBalance());
-            for (BonusEntity bonus: BonusService.findAllBonus()) {
-                if (bonus.getIdUser() == users.getIdUser()){
+            for (BonusEntity bonus : BonusService.findAllBonus()) {
+                if (bonus.getIdUser() == users.getIdUser()) {
                     finance.setBonusId(bonus.getBonusId());
                     finance.setDiscount(bonus.getDiscount());
                     finance.setCertificate(bonus.getCertificate());
@@ -131,5 +128,31 @@ public class ServerMethods {
             financeData.setData(finance);
         }
         return financeData;
+    }
+
+    public static Salon SalonData() {
+        Salon salon = new Salon();
+        int clientCount = 0;
+        int certificate = 0;
+        int discount = 0;
+        for (int i = 0; i < RoleHasUsersService.findAllRoles().size(); i++) {
+            if (RoleHasUsersService.findAllRoles().get(i).getRoleIdRole() == 1)
+                clientCount++;
+        }
+        salon.setClientCount(clientCount);
+        salon.setMasterCount(BeautyMastersService.findAllMasters().size());
+        salon.setServiceCount(ServiceService.findAllServices().size());
+        salon.setRecordCount(RecordService.findAllRecords().size());
+
+        for (BonusEntity b : BonusService.findAllBonus()) {
+            if (b.getCertificate() != 0)
+                certificate++;
+            else if (b.getDiscount() != 0)
+                discount++;
+        }
+        salon.setBonusCount(BonusService.findAllBonus().size());
+        salon.setCertificate(certificate);
+        salon.setDiscount(discount);
+        return salon;
     }
 }

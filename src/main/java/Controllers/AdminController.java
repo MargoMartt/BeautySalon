@@ -113,8 +113,15 @@ public class AdminController {
     }
 
     @FXML
-    void Salon(ActionEvent event) {
-
+    void Salon(ActionEvent event) throws IOException, ClassNotFoundException {
+        salon.getScene().getWindow().hide();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getClassLoader().getResource("salon.fxml"));
+        loader.load();
+        Parent root = loader.getRoot();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     @FXML

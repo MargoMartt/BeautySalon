@@ -1,6 +1,8 @@
 package DAO;
 
+import Entities.ServiceEntity;
 import Entities.UsersHasRoleEntity;
+import Services.RoleHasUsersService;
 import Utility.HibernateSessionFactory;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -9,14 +11,10 @@ import java.util.ArrayList;
 
 public class RoleHasUsersDAO {
     public UsersHasRoleEntity findById(int id) {
-        return HibernateSessionFactory.getSessionFactory().openSession().get(UsersHasRoleEntity.class, id);
-    }
-
-    public void x(UsersHasRoleEntity role, Session session) {
-        Transaction transaction = session.beginTransaction();
-        session.save(role);
-        transaction.commit();
-    }
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        UsersHasRoleEntity roleEntity = session.get(UsersHasRoleEntity.class, id);
+        session.close();
+        return roleEntity;    }
 
     public void save(UsersHasRoleEntity role) {
         Session session = HibernateSessionFactory.getSessionFactory().getCurrentSession();
@@ -43,9 +41,10 @@ public class RoleHasUsersDAO {
     }
 
     public ArrayList<UsersHasRoleEntity> findAll() {
-        ArrayList<UsersHasRoleEntity> rolesEntities = new ArrayList<UsersHasRoleEntity>();
-        return (ArrayList<UsersHasRoleEntity>) HibernateSessionFactory.getSessionFactory().openSession().createQuery("from UsersHasRoleEntity ").list();
-
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        ArrayList<UsersHasRoleEntity> users = (ArrayList<UsersHasRoleEntity>) session.createQuery("from UsersHasRoleEntity ").list();
+        session.close();
+        return users;
     }
 
 }

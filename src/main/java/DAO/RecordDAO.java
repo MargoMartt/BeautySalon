@@ -10,8 +10,10 @@ import java.util.ArrayList;
 
 public class RecordDAO {
     public RecordEntity findById(int id) {
-        return HibernateSessionFactory.getSessionFactory().openSession().get(RecordEntity.class, id);
-    }
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        RecordEntity record = session.get(RecordEntity.class, id);
+        session.close();
+        return record;    }
 
     public void save(RecordEntity record) {
         Session session = HibernateSessionFactory.getSessionFactory().openSession();
@@ -38,9 +40,10 @@ public class RecordDAO {
     }
 
     public ArrayList<RecordEntity> findAll() {
-        ArrayList<RecordEntity> accountingEntities = new ArrayList<RecordEntity>();
-        return (ArrayList<RecordEntity>) HibernateSessionFactory.getSessionFactory().openSession().createQuery("from RecordEntity ").list();
-
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        ArrayList<RecordEntity> record = (ArrayList<RecordEntity>) session.createQuery("from RecordEntity ").list();
+        session.close();
+        return record;
     }
 
 }

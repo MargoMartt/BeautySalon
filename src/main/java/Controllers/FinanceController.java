@@ -5,10 +5,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import Models.Finance;
-import Models.Master;
-import Models.ServiceData;
+import Models.*;
+import TCP.Request;
+import TCP.RequestType;
 import TCP.Response;
+import Utility.ClientSocket;
+import com.google.gson.Gson;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,6 +30,7 @@ import javafx.stage.Stage;
 
 import static Controllers.AdminController.financeData;
 import static Controllers.AdminController.masterData;
+import static Controllers.ServiceController.serviceModal;
 
 public class FinanceController {
 
@@ -65,15 +68,21 @@ public class FinanceController {
     private TableColumn<Finance, String> user;
 
     @FXML
-    void DeleteService(ActionEvent event) {
-
+    void DeleteService(ActionEvent event) throws IOException, ClassNotFoundException {
+        Request request = new Request(RequestType.DELETE_FINANCE, financeModal);
+        ClientSocket.send(request);
+        response = ClientSocket.listen();
+        System.out.println(response.getResponseMessage());
+        financeData = new Gson().fromJson(response.getResponseMessage(), FinanceData.class);
+        financeList.clear();
+        createTable(financeData.getData());
     }
 
     @FXML
     void EditService(ActionEvent event) throws IOException {
         stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("/financeadd.fxml"));
-        stage.setTitle("Редактирование записи");
+        stage.setTitle("Редактирование финансовых сведений");
         stage.setMinHeight(500);
         stage.setMinWidth(500);
         stage.setResizable(false);

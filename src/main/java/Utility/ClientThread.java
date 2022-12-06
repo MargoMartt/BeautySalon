@@ -1,9 +1,6 @@
 package Utility;
 
-import Entities.BeautyMastersEntity;
-import Entities.ServiceEntity;
-import Entities.UsersEntity;
-import Entities.UsersHasRoleEntity;
+import Entities.*;
 import Models.*;
 import Services.*;
 import TCP.*;
@@ -240,13 +237,64 @@ public class ClientThread implements Runnable {
                         outputStream.writeObject(new Gson().toJson(response));
                         break;
                     }
-                    case FINANCE:{
+                    case FINANCE: {
                         FinanceData financeData = ServerMethods.findAllFinance();
                         response = new Response<>(ResponseType.Ok, financeData);
                         outputStream.writeObject(new Gson().toJson(response));
                         System.out.println(response.getResponseMessage());
                         break;
                     }
+                    case DELETE_FINANCE: {
+                        Finance finance = gson.fromJson(requestMessage, Finance.class);
+                        BonusEntity bonusEntity = BonusService.findBonusId(finance.getBonusId());
+                        BonusService.deleteBonus(bonusEntity);
+
+                        FinanceData financeData = ServerMethods.findAllFinance();
+                        response = new Response<>(ResponseType.Ok, financeData);
+                        outputStream.writeObject(new Gson().toJson(response));
+                        System.out.println(response.getResponseMessage());
+                        break;
+                    }
+                    case UPDATE_FIANCE: {
+                        Finance finance = gson.fromJson(requestMessage, Finance.class);
+                        BonusEntity bonusEntity = new BonusEntity();
+                        UsersEntity user = UsersService.findUser(finance.getUserId());
+
+                        if (BonusService.findBonusId(finance.getBonusId()) != null) {
+
+                            user.setBalance(finance.getBalance());
+                            bonusEntity = BonusService.findBonusId(finance.getBonusId());
+                            bonusEntity.setCertificate(finance.getCertificate());
+                            bonusEntity.setDiscount(finance.getDiscount());
+
+                            if (bonusEntity.getDiscount() != 0 || bonusEntity.getCertificate() != 0) {
+                                BonusService.updateBonus(bonusEntity);
+                            } else BonusService.deleteBonus(bonusEntity);
+                            UsersService.updateUser(user);
+                        } else {
+                            user.setBalance(finance.getBalance());
+                            bonusEntity.setCertificate(finance.getCertificate());
+                            bonusEntity.setDiscount(finance.getDiscount());
+                            bonusEntity.setUsersByIdUser(user);
+                            if (bonusEntity.getDiscount() != 0 || bonusEntity.getCertificate() != 0) {
+                                BonusService.saveBonus(bonusEntity);
+                            }
+                            UsersService.updateUser(user);
+                        }
+
+                        FinanceData financeData = ServerMethods.findAllFinance();
+                        response = new Response<>(ResponseType.Ok, financeData);
+                        outputStream.writeObject(new Gson().toJson(response));
+                        System.out.println(response.getResponseMessage());
+                        break;
+                    }
+                    case SALON_DATA:{
+                        Salon salon = ServerMethods.SalonData();
+                        response = new Response<>(ResponseType.Ok, salon);
+                        outputStream.writeObject(new Gson().toJson(response));
+                        System.out.println(response.getResponseMessage());
+                    }
+
                 }
                 inputStream = new ObjectInputStream(clientSocket.getInputStream());
                 outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
