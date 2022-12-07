@@ -6,10 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-import Models.Master;
+import Models.*;
 import Models.Record;
-import Models.RecordData;
-import Models.ServiceData;
 import TCP.Request;
 import TCP.RequestType;
 import TCP.Response;
@@ -119,8 +117,14 @@ public class RecordController {
     }
 
     @FXML
-    void DeleteRecord(ActionEvent event) {
-
+    void DeleteRecord(ActionEvent event) throws IOException, ClassNotFoundException {
+        Request request = new Request(RequestType.DELETE_RECORD, recordModal);
+        ClientSocket.send(request);
+        response = ClientSocket.listen();
+        System.out.println(response.getResponseMessage());
+        recordData = new Gson().fromJson(response.getResponseMessage(), RecordData.class);
+        recordsList.clear();
+        createTable(recordData.getData());
     }
 
     @FXML

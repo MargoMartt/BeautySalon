@@ -43,7 +43,7 @@
             </DropShadow>
          </effect>
       </Button>
-      <Button fx:id="profitability" layoutX="361.0" layoutY="412.0" mnemonicParsing="false" onAction="#Profitability" prefHeight="59.0" prefWidth="385.0" style="-fx-background-color: linear-gradient(to top right, #FFCDE5, #F4D2D2);" text="Рентабильность салона" textFill="#7c7c7c">
+      <Button fx:id="profitability" layoutX="361.0" layoutY="412.0" mnemonicParsing="false" onAction="#Profitability" prefHeight="59.0" prefWidth="385.0" style="-fx-background-color: linear-gradient(to top right, #FFCDE5, #F4D2D2);" text="Рентабельность салона" textFill="#7c7c7c">
          <font>
             <Font name="SansSerif Regular" size="21.0" />
          </font>

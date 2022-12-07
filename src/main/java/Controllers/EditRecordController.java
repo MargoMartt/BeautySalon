@@ -2,6 +2,7 @@ package Controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 import Enums.RecordTime;
@@ -75,8 +76,10 @@ public class EditRecordController {
                 record.setMasterId(serviceList.getData().get(i).getMasterId());
             }
         }
+        record.setFinalCost(recordModal.getFinalCost());
+        record.setRecordId(recordModal.getRecordId());
         record.setLogin(recordModal.getLogin());
-        record.setUserId(recordModal.getUserId());
+        record.setClientId(recordModal.getClientId());
         Request request = new Request(RequestType.UPDATE_RECORD, record);
         ClientSocket.send(request);
         resp = ClientSocket.listen();
@@ -100,6 +103,7 @@ public class EditRecordController {
         }
         service.setItems(list);
         time.setItems(timeList);
+        date.setValue(LocalDate.parse(recordModal.getDate()));
         service.setValue(recordModal.getService());
         time.setValue(recordModal.getTime());
     }

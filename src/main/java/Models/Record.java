@@ -5,7 +5,8 @@ import org.terracotta.statistics.Time;
 import java.util.Date;
 
 public class Record {
-    private int userId;
+    private int recordId;
+    private int clientId;
     private String date;
     private String time;
     private int serviceId;
@@ -13,7 +14,6 @@ public class Record {
     private String master;
     private int masterId;
     private String client;
-    private int clientID;
     private double cost;
     private double finalCost;
     private int discount;
@@ -23,12 +23,20 @@ public class Record {
     public Record() {
     }
 
-    public int getUserId() {
-        return userId;
+    public int getClientId() {
+        return clientId;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setClientId(int clientId) {
+        this.clientId = clientId;
+    }
+
+    public int getRecordId() {
+        return recordId;
+    }
+
+    public void setRecordId(int recordId) {
+        this.recordId = recordId;
     }
 
     public String getLogin() {
@@ -111,13 +119,6 @@ public class Record {
         this.client = client;
     }
 
-    public int getClientID() {
-        return clientID;
-    }
-
-    public void setClientID(int clientID) {
-        this.clientID = clientID;
-    }
 
     public double getCost() {
         return cost;

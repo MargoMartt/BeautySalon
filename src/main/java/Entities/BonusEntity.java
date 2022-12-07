@@ -28,6 +28,10 @@ public class BonusEntity {
     public BonusEntity() {
     }
 
+    public BonusEntity(int idUser) {
+        this.idUser = idUser;
+    }
+
     public int getBonusId() {
         return bonusId;
     }

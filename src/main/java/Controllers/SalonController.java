@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import Models.ProfitabilityData;
 import Models.Salon;
 import Models.ServiceData;
 import TCP.Request;
@@ -27,6 +28,7 @@ import static Controllers.AdminController.masterData;
 public class SalonController {
     Response response;
     public static Salon salon = new Salon();
+    public static ProfitabilityData profitabilityData = new ProfitabilityData();
 
     @FXML
     private ResourceBundle resources;
@@ -50,12 +52,43 @@ public class SalonController {
     private Button report;
 
     @FXML
-    void Graph(ActionEvent event) {
+    void Graph(ActionEvent event) throws IOException, ClassNotFoundException {
+        stage = new Stage();
+        String message = "График рентабельности салона";
+        Request request = new Request(RequestType.PROFITABILITY, message);
+        ClientSocket.send(request);
+        response = ClientSocket.listen();
+        profitabilityData = new Gson().fromJson(response.getResponseMessage(), ProfitabilityData.class);
 
+        Parent root = FXMLLoader.load(getClass().getResource("/chart.fxml"));
+        stage.setTitle("График");
+        stage.setMinHeight(500);
+        stage.setMinWidth(500);
+        stage.setResizable(false);
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(((Node) event.getSource()).getScene().getWindow());
+        stage.showAndWait();
     }
 
     @FXML
-    void Profitability(ActionEvent event) {
+    void Profitability(ActionEvent event) throws IOException, ClassNotFoundException {
+        stage = new Stage();
+        String message = "Рентабельность салона";
+        Request request = new Request(RequestType.PROFITABILITY, message);
+        ClientSocket.send(request);
+        response = ClientSocket.listen();
+        profitabilityData = new Gson().fromJson(response.getResponseMessage(), ProfitabilityData.class);
+
+        Parent root = FXMLLoader.load(getClass().getResource("/profitability.fxml"));
+        stage.setTitle("Рентабельность");
+        stage.setMinHeight(500);
+        stage.setMinWidth(500);
+        stage.setResizable(false);
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(((Node) event.getSource()).getScene().getWindow());
+        stage.showAndWait();
 
     }
 

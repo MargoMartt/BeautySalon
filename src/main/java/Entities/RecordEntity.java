@@ -30,7 +30,7 @@ public class RecordEntity {
     @JoinColumn(name = "id_user", referencedColumnName = "id_user", nullable = false)
     private UsersEntity usersByIdUser;
     @ManyToOne
-    @JoinColumn(name = "service_id", referencedColumnName = "service_id", nullable = true)
+    @JoinColumn(name = "service_id", referencedColumnName = "service_id", nullable = false)
     private ServiceEntity serviceByserviceId;
 
 

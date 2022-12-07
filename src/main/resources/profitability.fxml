@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1097.0" style="-fx-background-image: url('img/register.png');" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ProfitabilityController">
+   <children>
+      <ImageView fitHeight="780.0" fitWidth="1097.0">
+         <image>
+            <Image url="@img/profitability.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="back" layoutX="35.0" layoutY="411.0" mnemonicParsing="false" onAction="#onBackButtonClick" opacity="0.0" prefHeight="59.0" prefWidth="57.0" style="-fx-background-image: url('img/back.png'); -fx-background-color: yellow; -fx-border-radius: 4;" textFill="WHITE" />
+      <ImageView layoutX="44.0" layoutY="417.0" opacity="0.33">
+         <image>
+            <Image url="@img/back.png" />
+         </image>
+      </ImageView>
+      <TableView fx:id="table" layoutX="215.0" layoutY="228.0" onMouseClicked="#selectMaster" prefHeight="452.0" prefWidth="718.0">
+         <columns>
+            <TableColumn fx:id="service" prefWidth="121.0" text="Услуга" />
+            <TableColumn fx:id="count" prefWidth="104.0" text="Кол-во продаж" />
+            <TableColumn fx:id="price" prefWidth="104.0" text="Цена за услугу" />
+            <TableColumn fx:id="cost" prefWidth="210.0" text="Прибыль без учета скидки" />
+            <TableColumn fx:id="finalcost" prefWidth="178.0" text="Конечная прибыль" />
+         </columns>
+      </TableView>
+      <Label fx:id="adminData" layoutX="487.0" layoutY="86.0" prefHeight="27.0" prefWidth="173.0" style="-fx-text-alignment: centre;" textAlignment="CENTER" textFill="#7c6c72" textOverrun="CLIP">
+         <font>
+            <Font name="Comic Sans MS" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="sum" layoutX="617.0" layoutY="691.0" prefHeight="48.0" prefWidth="86.0" style="-fx-text-alignment: centre;" textAlignment="CENTER" textFill="#a43962" textOverrun="CLIP">
+         <font>
+            <Font name="Comic Sans MS" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="text" layoutX="316.0" layoutY="691.0" prefHeight="48.0" prefWidth="268.0" style="-fx-text-alignment: centre;" text="Общая выручка салона составляет: " textAlignment="CENTER" textFill="#a43962" textOverrun="CLIP">
+         <font>
+            <Font name="Comic Sans MS" size="14.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>

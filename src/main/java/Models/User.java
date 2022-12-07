@@ -1,6 +1,7 @@
 package Models;
 
 public class User {
+    private int userId;
     private String role;
     private Integer idRole;
     private String userName;
@@ -8,10 +9,18 @@ public class User {
     private String login;
     private String password;
 
+
     public void setIdRole(int idRole) {
         this.idRole = idRole;
     }
 
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
     public void setData(String userName, String userSurname, String login, String password) {
         this.userName = userName;

@@ -23,6 +23,7 @@ public class UsersHasRoleEntity {
         this.roleIdRole = roleIdRole;
     }
 
+
     public UsersHasRoleEntity() {
     }
 

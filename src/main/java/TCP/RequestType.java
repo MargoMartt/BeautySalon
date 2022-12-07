@@ -20,10 +20,11 @@ public enum RequestType {
     FINANCE,
     DELETE_FINANCE,
     UPDATE_FIANCE,
-    SALON_DATA,
     RECORD,
     ADD_RECORD,
     UPDATE_RECORD,
     DELETE_RECORD,
+    SALON_DATA,
+    PROFITABILITY,
     MAKE_REPORT
 }

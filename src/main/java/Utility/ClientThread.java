@@ -108,10 +108,17 @@ public class ClientThread implements Runnable {
                     }
                     case DELETE_USER: {
                         User user = gson.fromJson(requestMessage, User.class);
+
                         UsersEntity respUser = UsersService.findUserLog(user.getLogin());
-                        UsersService.deleteUser(respUser);
+                        BonusEntity bonus = ServerMethods.findBonusUser(user.getUserId());
                         UsersHasRoleEntity entity = new UsersHasRoleEntity(respUser.getIdUser());
+                        RecordEntity record = ServerMethods.findRecordUser(user.getUserId());
+
+                        BonusService.deleteBonus(bonus);
+                        RecordService.deleteRecord(record);
                         RoleHasUsersService.deleteRole(entity);
+                        UsersService.deleteUser(respUser);
+
                         UserData userData = ServerMethods.findAllUsers();
                         response = new Response<>(ResponseType.Ok, userData);
                         outputStream.writeObject(new Gson().toJson(response));
@@ -171,6 +178,7 @@ public class ClientThread implements Runnable {
                         Master master = gson.fromJson(requestMessage, Master.class);
                         BeautyMastersEntity respMaster = BeautyMastersService.findMaster(master.getMasterId());
                         System.out.println(respMaster.toString());
+                        ServerMethods.deleteByIDMaster(respMaster.getMasterId());
                         BeautyMastersService.deleteMaster(respMaster);
 
                         MasterData masterData = ServerMethods.findAllMasters();
@@ -190,7 +198,7 @@ public class ClientThread implements Runnable {
                         ServiceEntity serviceEntity = new ServiceEntity();
                         Service service = gson.fromJson(requestMessage, Service.class);
                         if (ServiceService.findServiceId(service.getMasterId()) != null) {
-                            String answer = "Такой мастер уже существует";
+                            String answer = "Такая услуга уже существует";
                             response = new Response<>(ResponseType.ERROR, answer);
                             outputStream.writeObject(new Gson().toJson(response));
                         } else {
@@ -290,12 +298,6 @@ public class ClientThread implements Runnable {
                         System.out.println(response.getResponseMessage());
                         break;
                     }
-                    case SALON_DATA: {
-                        Salon salon = ServerMethods.SalonData();
-                        response = new Response<>(ResponseType.Ok, salon);
-                        outputStream.writeObject(new Gson().toJson(response));
-                        System.out.println(response.getResponseMessage());
-                    }
 
                     case RECORD: {
                         RecordData recordData = ServerMethods.RecordInfo();
@@ -357,11 +359,11 @@ public class ClientThread implements Runnable {
                         response = new Response<>(ResponseType.Ok, recordData);
                         outputStream.writeObject(new Gson().toJson(response));
                         System.out.println(response.getResponseMessage());
+                        break;
                     }
                     case UPDATE_RECORD: {
                         Record record = gson.fromJson(requestMessage, Record.class);
-                        RecordEntity recordEntity = new RecordEntity();
-                        //Нужно не объявлять новый, а находить в бд!!!!! Добавить в record поле idRecord, не забывть его добавить в serverfunction, передать в контроллере и словить здесь!
+                        RecordEntity recordEntity = RecordService.findRecord(record.getRecordId());
                         ServiceEntity service = ServiceService.findServiceId(record.getServiceId());
                         BonusEntity bonus;
 
@@ -373,13 +375,9 @@ public class ClientThread implements Runnable {
                             System.out.println(response.getResponseMessage());
                             break;
                         }
-                        UsersEntity user = UsersService.findUser(record.getUserId());
-                        bonus = BonusService.findBonusUser(record.getUserId());
-                        if (!service.getServiceName().equals(record.getService())) {
-                            user.setBalance(user.getBalance() + service.getServicePrice());
-                        } else {
-                            user.setBalance(user.getBalance() + record.getCost());
-                        }
+                        UsersEntity user = UsersService.findUser(record.getClientId());
+                        bonus = BonusService.findBonusUser(record.getClientId());
+                        user.setBalance(user.getBalance() + record.getFinalCost());
 
                         if (bonus == null) break;
                         if (user.getBalance() == null) {
@@ -410,7 +408,38 @@ public class ClientThread implements Runnable {
                         response = new Response<>(ResponseType.Ok, recordData);
                         outputStream.writeObject(new Gson().toJson(response));
                         System.out.println(response.getResponseMessage());
+                        break;
                     }
+                    case DELETE_RECORD: {
+                        Record record = gson.fromJson(requestMessage, Record.class);
+                        RecordEntity recordEntity = RecordService.findRecord(record.getRecordId());
+                        RecordService.deleteRecord(recordEntity);
+
+                        UsersEntity usersEntity = UsersService.findUser(record.getClientId());
+                        usersEntity.setBalance(usersEntity.getBalance() + record.getFinalCost());
+                        UsersService.updateUser(usersEntity);
+
+                        RecordData recordData = ServerMethods.RecordInfo();
+                        response = new Response<>(ResponseType.Ok, recordData);
+                        outputStream.writeObject(new Gson().toJson(response));
+                        System.out.println(response.getResponseMessage());
+                        break;
+                    }
+                    case SALON_DATA: {
+                        Salon salon = ServerMethods.SalonData();
+                        response = new Response<>(ResponseType.Ok, salon);
+                        outputStream.writeObject(new Gson().toJson(response));
+                        System.out.println(response.getResponseMessage());
+                        break;
+                    }
+                    case PROFITABILITY: {
+                        ProfitabilityData profitabilityData = ServerMethods.ProfitabilityData();
+                        response = new Response<>(ResponseType.Ok, profitabilityData);
+                        outputStream.writeObject(new Gson().toJson(response));
+                        System.out.println(response.getResponseMessage());
+                        break;
+                    }
+
 
                 }
                 inputStream = new ObjectInputStream(clientSocket.getInputStream());

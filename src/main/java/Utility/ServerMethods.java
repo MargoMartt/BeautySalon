@@ -14,6 +14,7 @@ public class ServerMethods {
         UserData userData = new UserData();
         for (UsersEntity us : UsersService.findAllUsers()) {
             User user = new User();
+            user.setUserId(us.getIdUser());
             user.setUserName(us.getUserName());
             user.setUserSurname(us.getUserSurname());
             user.setLogin(us.getLogin());
@@ -45,6 +46,37 @@ public class ServerMethods {
             userData.setData(user);
         }
         return userData;
+    }
+
+    public static BonusEntity findBonusUser(int id) {
+        BonusEntity bonus = new BonusEntity();
+        for (BonusEntity bonuses : BonusService.findAllBonus()) {
+            if (bonuses.getIdUser() == id)
+                return bonuses;
+        }
+        return bonus;
+    }
+
+    public static RecordEntity findRecordUser(int id) {
+        RecordEntity record = new RecordEntity();
+        for (RecordEntity records : RecordService.findAllRecords()) {
+            if (records.getIdUser() == id)
+                return records;
+        }
+        return record;
+    }
+
+    public static void deleteByIDMaster(int id) {
+        for (ServiceEntity services : ServiceService.findAllServices()) {
+            if (id == services.getMasterId()) {
+                for (RecordEntity record : RecordService.findAllRecords()) {
+                    if (services.getserviceId() == record.getserviceId()) {
+                        RecordService.deleteRecord(record);
+                    }
+                    ServiceService.deleteService(services);
+                }
+            }
+        }
     }
 
     public static MasterData findAllMasters() {
@@ -164,19 +196,20 @@ public class ServerMethods {
         RecordData recordData = new RecordData();
         for (RecordEntity recordEntity : RecordService.findAllRecords()) {
             Record record = new Record();
+            record.setRecordId(recordEntity.getRecordId());
             record.setDate(String.valueOf(recordEntity.getDate()));
             record.setTime(recordEntity.getTime());
-            record.setClientID(recordEntity.getIdUser());
+            record.setClientId(recordEntity.getIdUser());
             record.setServiceId(recordEntity.getserviceId());
 
-            UsersEntity user = UsersService.findUser(record.getClientID());
+            UsersEntity user = UsersService.findUser(record.getClientId());
             record.setClient(user.getUserName() + " " + user.getUserSurname());
-            record.setUserId(user.getIdUser());
+            record.setClientId(user.getIdUser());
             record.setBalance(user.getBalance());
 
             for (BonusEntity bonus : BonusService.findAllBonus()
             ) {
-                if (bonus.getIdUser() == record.getClientID()) {
+                if (bonus.getIdUser() == record.getClientId()) {
                     record.setDiscount(bonus.getDiscount());
                     break;
                 } else record.setDiscount(0);
@@ -210,5 +243,33 @@ public class ServerMethods {
             }
         }
         return false;
+    }
+
+    public static ProfitabilityData ProfitabilityData() {
+        ProfitabilityData profitabilityData = new ProfitabilityData();
+        double sum = 0;
+        for (ServiceEntity services : ServiceService.findAllServices()) {
+            int count = 0;
+            double finalCost = 0;
+
+            Profitability profitability = new Profitability();
+            profitability.setServiceId(services.getserviceId());
+            profitability.setPrice(services.getServicePrice());
+            profitability.setService(services.getServiceName());
+            for (RecordEntity records : RecordService.findAllRecords()) {
+                if (records.getserviceId() == profitability.getServiceId()) {
+                    count++;
+                    finalCost += records.getTotalCost();
+                }
+            }
+            profitability.setCount(count);
+            profitability.setCost(profitability.getPrice() * count);
+            profitability.setFinalCost(finalCost);
+            profitabilityData.setData(profitability);
+            sum += profitability.getFinalCost();
+        }
+        profitabilityData.setSum(sum);
+
+        return profitabilityData;
     }
 }
