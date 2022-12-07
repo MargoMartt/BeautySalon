@@ -73,8 +73,8 @@ public class ServerMethods {
                     if (services.getserviceId() == record.getserviceId()) {
                         RecordService.deleteRecord(record);
                     }
-                    ServiceService.deleteService(services);
                 }
+                ServiceService.deleteService(services);
             }
         }
     }
