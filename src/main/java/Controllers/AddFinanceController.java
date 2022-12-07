@@ -71,7 +71,7 @@ public class AddFinanceController {
     @FXML
     void onOkButtonClick(ActionEvent event) throws IOException, ClassNotFoundException {
         Finance finance = new Finance();
-        finance.setBalance(amount.getText());
+        finance.setBalance(Double.parseDouble(amount.getText()));
         finance.setBonusId(financeModal.getBonusId());
         finance.setUserId(financeModal.getUserId());
 
@@ -110,7 +110,10 @@ public class AddFinanceController {
     void initialize() {
         certificate.setItems(certificateList);
         discount.setItems(discountList);
-        amount.setText(financeModal.getBalance());
+        if (financeModal.getBalance() == null) {
+            amount.setText("0");
+        } else
+            amount.setText(financeModal.getBalance().toString());
     }
 
 }

@@ -20,6 +20,8 @@ public class UsersService {
                 break;
             }
         }
+        if (user.getIdUser() == 0)
+            return null;
         return user;
     }
     public static UsersEntity findUser(int id) {

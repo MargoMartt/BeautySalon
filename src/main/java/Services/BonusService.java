@@ -32,4 +32,16 @@ public class BonusService {
         return bonusDAO.findAll();
     }
 
+    public static BonusEntity findBonusUser(int userId) {
+        BonusEntity bonusEntity = new BonusEntity();
+        for (BonusEntity bonus : BonusService.findAllBonus()) {
+            if (bonus.getIdUser() == userId) {
+                bonusEntity = bonus;
+                break;
+            }
+        }
+        if (bonusEntity == null)
+            return null;
+        else return bonusEntity;
+    }
 }

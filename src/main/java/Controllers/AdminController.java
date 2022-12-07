@@ -4,10 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import Models.FinanceData;
-import Models.MasterData;
-import Models.ServiceData;
-import Models.UserData;
+import Models.*;
 import TCP.*;
 import Utility.ClientSocket;
 import com.google.gson.Gson;
@@ -26,6 +23,7 @@ public class AdminController {
     public static ServiceData serviceData = new ServiceData();
     public static UserData userData = new UserData();
     public static MasterData masterData = new MasterData();
+    public  static RecordData recordData = new RecordData();
 
     @FXML
     private ResourceBundle resources;
@@ -108,8 +106,23 @@ public class AdminController {
     }
 
     @FXML
-    void Records(ActionEvent event) {
+    void Records(ActionEvent event) throws IOException, ClassNotFoundException {
+        Request request = new Request(RequestType.RECORD, "Посмотреть записи");
+        ClientSocket.send(request);
 
+        response = ClientSocket.listen();
+        System.out.println(response);
+        recordData = new Gson().fromJson(response.getResponseMessage(), RecordData.class);
+        System.out.println(response.getResponseMessage());
+
+        users.getScene().getWindow().hide();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getClassLoader().getResource("record.fxml"));
+        loader.load();
+        Parent root = loader.getRoot();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     @FXML

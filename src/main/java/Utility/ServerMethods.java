@@ -3,9 +3,11 @@ package Utility;
 import Entities.*;
 import Enums.Roles;
 import Models.*;
+import Models.Record;
 import Services.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ServerMethods {
     public static UserData findAllUsers() {
@@ -68,6 +70,8 @@ public class ServerMethods {
         ServiceData serviceData = new ServiceData();
         for (ServiceEntity services : ServiceService.findAllServices()) {
             Service service = new Service();
+            service.setMasterId(services.getMasterId());
+            service.setServiceId(services.getserviceId());
             service.setServiceName(services.getServiceName());
             service.setServicePrice(services.getServicePrice());
             serviceData.setData(service);
@@ -154,5 +158,57 @@ public class ServerMethods {
         salon.setCertificate(certificate);
         salon.setDiscount(discount);
         return salon;
+    }
+
+    public static RecordData RecordInfo() {
+        RecordData recordData = new RecordData();
+        for (RecordEntity recordEntity : RecordService.findAllRecords()) {
+            Record record = new Record();
+            record.setDate(String.valueOf(recordEntity.getDate()));
+            record.setTime(recordEntity.getTime());
+            record.setClientID(recordEntity.getIdUser());
+            record.setServiceId(recordEntity.getserviceId());
+
+            UsersEntity user = UsersService.findUser(record.getClientID());
+            record.setClient(user.getUserName() + " " + user.getUserSurname());
+            record.setUserId(user.getIdUser());
+            record.setBalance(user.getBalance());
+
+            for (BonusEntity bonus : BonusService.findAllBonus()
+            ) {
+                if (bonus.getIdUser() == record.getClientID()) {
+                    record.setDiscount(bonus.getDiscount());
+                    break;
+                } else record.setDiscount(0);
+            }
+
+            ServiceEntity service = ServiceService.findServiceId(record.getServiceId());
+            record.setService(service.getServiceName());
+            record.setCost(service.getServicePrice());
+            record.setMasterId(service.getMasterId());
+
+            BeautyMastersEntity master = BeautyMastersService.findMaster(record.getMasterId());
+            record.setMaster(master.getMasterName() + " " + master.getMasterSurname());
+
+            record.setFinalCost(record.getCost() - record.getCost() * record.getDiscount() / 100);
+            recordData.setData(record);
+        }
+        return recordData;
+    }
+
+    public static Boolean findRecord(int id, String date, String time) {
+        ServiceEntity serviceEntity = ServiceService.findServiceId(id);
+        for (RecordEntity records : RecordService.findAllRecords()) {
+            if (records.getserviceId() == id && records.getDate().toString().equals(date) && records.getTime().equals(time)) {
+                return true;
+            }
+
+            for (ServiceEntity service : ServiceService.findAllServices()) {
+                if (service.getMasterId() == serviceEntity.getMasterId() && records.getDate().toString().equals(date) && records.getTime().equals(time)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

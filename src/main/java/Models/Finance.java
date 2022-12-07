@@ -6,17 +6,17 @@ public class Finance {
     private int discount;
     private int certificate;
     private String userName;
-    private String balance;
+    private Double balance;
 
     public String getUserName() {
         return userName;
     }
 
-    public String getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(String balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 

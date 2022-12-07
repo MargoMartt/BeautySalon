@@ -23,15 +23,15 @@ public class UsersEntity {
     private String password;
     @Basic
     @Column(name = "balance", nullable = true, length = 45)
-    private String balance;
+    private Double balance;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "usersIdUser", cascade = CascadeType.ALL)
     private Collection<UsersHasRoleEntity> usersHasRolesByIdUser;
 
-    public String getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(String balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 
