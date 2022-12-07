@@ -92,10 +92,5 @@ public class AddServiceController {
             list.add(listMasters.getData().get(i).getMasterInfo());
         }
         master.setItems(list);
-        name.setText(serviceModal.getServiceName());
-        price.setText(String.valueOf(serviceModal.getServicePrice()));
-
     }
-
-
 }
