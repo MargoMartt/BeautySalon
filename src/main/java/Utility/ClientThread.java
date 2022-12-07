@@ -361,6 +361,7 @@ public class ClientThread implements Runnable {
                     case UPDATE_RECORD: {
                         Record record = gson.fromJson(requestMessage, Record.class);
                         RecordEntity recordEntity = new RecordEntity();
+                        //Нужно не объявлять новый, а находить в бд!!!!! Добавить в record поле idRecord, не забывть его добавить в serverfunction, передать в контроллере и словить здесь!
                         ServiceEntity service = ServiceService.findServiceId(record.getServiceId());
                         BonusEntity bonus;
 
