@@ -28,7 +28,7 @@
             <Font name="Comic Sans MS" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="users" layoutX="141.0" layoutY="335.0" mnemonicParsing="false" onAction="#Users" prefHeight="50.0" prefWidth="385.0" style="-fx-background-color: E8E9E9;" text="Пользователи" textFill="#7c7c7c">
+      <Button fx:id="users" layoutX="148.0" layoutY="320.0" mnemonicParsing="false" onAction="#Users" prefHeight="50.0" prefWidth="385.0" style="-fx-background-color: E8E9E9;" text="Пользователи" textFill="#7c7c7c">
          <font>
             <Font name="SansSerif Regular" size="21.0" />
          </font>
@@ -43,22 +43,7 @@
             </DropShadow>
          </effect>
       </Button>
-      <Button fx:id="admin" layoutX="381.0" layoutY="557.0" mnemonicParsing="false" onAction="#Admin" prefHeight="59.0" prefWidth="385.0" style="-fx-background-color: linear-gradient(to top right, #FFCDE5, #F4D2D2);" text="Редактировать администратора" textFill="#7c7c7c">
-         <font>
-            <Font name="SansSerif Regular" size="21.0" />
-         </font>
-         <effect>
-            <DropShadow blurType="TWO_PASS_BOX" offsetY="5.0">
-               <color>
-                  <Color red="0.550000011920929" green="0.07699999958276749" blue="0.3686833381652832" opacity="0.42748090624809265" />
-               </color>
-            </DropShadow>
-         </effect>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </Button>
-      <Button fx:id="masters" layoutX="141.0" layoutY="398.0" mnemonicParsing="false" onAction="#Masters" prefHeight="50.0" prefWidth="385.0" style="-fx-background-color: E8E9E9;" text="Мастера" textFill="#7c7c7c">
+      <Button fx:id="masters" layoutX="148.0" layoutY="403.0" mnemonicParsing="false" onAction="#Masters" prefHeight="50.0" prefWidth="385.0" style="-fx-background-color: E8E9E9;" text="Мастера" textFill="#7c7c7c">
          <font>
             <Font name="SansSerif Regular" size="21.0" />
          </font>
@@ -73,7 +58,7 @@
             </DropShadow>
          </effect>
       </Button>
-      <Button fx:id="services" layoutX="141.0" layoutY="467.0" mnemonicParsing="false" onAction="#Services" prefHeight="50.0" prefWidth="385.0" style="-fx-background-color: E8E9E9;" text="Услуги" textFill="#7c7c7c">
+      <Button fx:id="services" layoutX="148.0" layoutY="485.0" mnemonicParsing="false" onAction="#Services" prefHeight="50.0" prefWidth="385.0" style="-fx-background-color: E8E9E9;" text="Услуги" textFill="#7c7c7c">
          <font>
             <Font name="SansSerif Regular" size="21.0" />
          </font>
@@ -88,7 +73,7 @@
             </DropShadow>
          </effect>
       </Button>
-      <Button fx:id="finance" layoutX="608.0" layoutY="335.0" mnemonicParsing="false" onAction="#Finance" prefHeight="50.0" prefWidth="385.0" style="-fx-background-color: E8E9E9;" text="Финансы" textFill="#7c7c7c">
+      <Button fx:id="finance" layoutX="615.0" layoutY="320.0" mnemonicParsing="false" onAction="#Finance" prefHeight="50.0" prefWidth="385.0" style="-fx-background-color: E8E9E9;" text="Финансы" textFill="#7c7c7c">
          <font>
             <Font name="SansSerif Regular" size="21.0" />
          </font>
@@ -103,7 +88,7 @@
             </DropShadow>
          </effect>
       </Button>
-      <Button fx:id="record" layoutX="608.0" layoutY="401.0" mnemonicParsing="false" onAction="#Records" prefHeight="50.0" prefWidth="385.0" style="-fx-background-color: E8E9E9;" text="Записи" textFill="#7c7c7c">
+      <Button fx:id="record" layoutX="615.0" layoutY="403.0" mnemonicParsing="false" onAction="#Records" prefHeight="50.0" prefWidth="385.0" style="-fx-background-color: E8E9E9;" text="Записи" textFill="#7c7c7c">
          <font>
             <Font name="SansSerif Regular" size="21.0" />
          </font>
@@ -118,7 +103,7 @@
             </DropShadow>
          </effect>
       </Button>
-      <Button fx:id="salon" layoutX="608.0" layoutY="468.0" mnemonicParsing="false" onAction="#Salon" prefHeight="50.0" prefWidth="385.0" style="-fx-background-color: E8E9E9;" text="Сведения салона" textFill="#7c7c7c">
+      <Button fx:id="salon" layoutX="615.0" layoutY="485.0" mnemonicParsing="false" onAction="#Salon" prefHeight="50.0" prefWidth="385.0" style="-fx-background-color: E8E9E9;" text="Сведения салона" textFill="#7c7c7c">
          <font>
             <Font name="SansSerif Regular" size="21.0" />
          </font>

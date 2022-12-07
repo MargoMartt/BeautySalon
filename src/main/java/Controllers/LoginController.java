@@ -64,16 +64,8 @@ public class LoginController {
         resp = ClientSocket.listen();
         if (resp.getResponseType().equals(ResponseType.Ok)) {
             User userData =  new Gson().fromJson(resp.getResponseMessage(), User.class);
-
-//            ArrayList<UsersHasRoleEntity> roles = RoleHasUsersService.findAllRoles();
-//            System.out.println(roles);
-//            for (int i = 0; i < roles.size(); i++) {
-//                System.out.println(user.getIdUser());
-//                if (user.getIdUser() == roles.get(i).getUsersIdUser()) {
-//                    id = roles.get(i).getRoleIdRole();
-//                }
-//            }
             System.out.println(userData.getIdRole());
+
             if (userData.getIdRole() == 3) {
                 login.getScene().getWindow().hide();
                 FXMLLoader loader = new FXMLLoader();

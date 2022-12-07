@@ -1,11 +1,5 @@
 package Controllers;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import Models.Master;
-import Models.MasterData;
 import Models.Service;
 import Models.ServiceData;
 import TCP.Request;
@@ -25,9 +19,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import static Controllers.AdminController.serviceData;
 import static Controllers.ServiceController.listMasters;
 import static Controllers.ServiceController.serviceModal;
-import static Controllers.AdminController.serviceData;
 
 public class AddServiceController {
     Response resp;
