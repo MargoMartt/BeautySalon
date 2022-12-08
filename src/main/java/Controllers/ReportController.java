@@ -16,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+import static Controllers.LoginController.UsersNameSurname;
 import static Controllers.SalonController.salon;
 import static Controllers.ServiceController.serviceModal;
 
@@ -86,6 +87,7 @@ public class ReportController {
 
     @FXML
     void initialize() {
+        adminData.setText(UsersNameSurname);
         bonus.setText(String.valueOf(salon.getBonusCount()));
         client.setText(String.valueOf(salon.getClientCount()));
         masters.setText(String.valueOf(salon.getMasterCount()));

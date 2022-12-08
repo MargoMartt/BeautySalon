@@ -8,17 +8,17 @@ public class RegistrationPayload{
     private String userSurname;
     private String login;
     private String password;
-    private String balance;
+    private Double balance;
 
     public void setIdRole(int idRole) {
         this.idRole = idRole;
     }
 
-    public String getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(String balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 

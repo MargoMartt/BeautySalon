@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static Controllers.AdminController.serviceData;
+import static Controllers.LoginController.serviceData;
 import static Controllers.ServiceController.listMasters;
 import static Controllers.ServiceController.serviceModal;
 

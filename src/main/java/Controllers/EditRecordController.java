@@ -22,7 +22,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
-import static Controllers.AdminController.recordData;
+import static Controllers.LoginController.recordData;
 import static Controllers.RecordController.recordModal;
 import static Controllers.RecordController.serviceList;
 

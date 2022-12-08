@@ -15,6 +15,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import static Controllers.LoginController.UsersNameSurname;
+
 public class RegistrationController {
 
     @FXML
@@ -74,7 +76,9 @@ public class RegistrationController {
         payload.setUserSurname(surname.getText());
         payload.setLogin(login.getText());
         payload.setPassword(password.getText());
-        payload.setBalance(balance.getText());
+        if (!balance.getText().isEmpty()){
+            payload.setBalance(Double.valueOf(balance.getText()));}
+        else payload.setBalance(0.0);
 
         Request request = new Request(RequestType.REGISTER, payload);
         ClientSocket.send(request);

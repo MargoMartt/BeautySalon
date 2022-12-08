@@ -16,7 +16,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
-import static Controllers.AdminController.masterData;
+import static Controllers.LoginController.masterData;
 import static Controllers.MastersController.masterModal;
 
 public class AddMasterController {

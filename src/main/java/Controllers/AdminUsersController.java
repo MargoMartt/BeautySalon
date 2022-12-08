@@ -5,9 +5,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import Models.User;
-import Models.UserData;
-import TCP.*;
+import Models.*;
+import TCP.Request;
+import TCP.RequestType;
+import TCP.Response;
 import Utility.ClientSocket;
 import com.google.gson.Gson;
 import javafx.collections.FXCollections;
@@ -18,22 +19,22 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import static Controllers.LoginController.*;
+import static Controllers.LoginController.UsersNameSurname;
+import static Controllers.LoginController.userData;
 
-public class AllUsersController {
+public class AdminUsersController {
+    Response response;
     static User userModal = new User();
-    private ObservableList<User> userList = FXCollections.observableArrayList();
-
-    @FXML
-    private Button delete;
-
-    @FXML
-    private Button edit;
+    private ObservableList<User> clientList = FXCollections.observableArrayList();
 
     @FXML
     private ResourceBundle resources;
@@ -42,25 +43,23 @@ public class AllUsersController {
     private URL location;
 
     @FXML
-    private TableColumn<?, ?> action;
-
-    @FXML
     private Label adminData;
 
     @FXML
     private Button back;
 
     @FXML
+    private Button delete;
+
+    @FXML
+    private Button edit;
+
+
+    @FXML
     private TableColumn<User, String> login;
 
     @FXML
     private TableColumn<User, String> name;
-
-    @FXML
-    private TableColumn<User, String> password;
-
-    @FXML
-    private TableColumn<User, String> role;
 
     @FXML
     private TableColumn<User, String> surname;
@@ -71,33 +70,22 @@ public class AllUsersController {
     @FXML
     void onBackButtonClick(ActionEvent event) throws IOException {
         back.getScene().getWindow().hide();
-        if (loginId == 3) {
-            loader.setLocation(getClass().getClassLoader().getResource("admin.fxml"));
-            loader.load();
-            Parent root = loader.getRoot();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
+        loader.setLocation(getClass().getClassLoader().getResource("adminsalona.fxml"));
 
-        }
-        if (loginId == 2) {
-            loader.setLocation(getClass().getClassLoader().getResource("adminsalona.fxml"));
-            loader.load();
-            Parent root = loader.getRoot();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
-        }
+        loader.load();
+        Parent root = loader.getRoot();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     @FXML
     void DeleteUser(ActionEvent event) throws IOException, ClassNotFoundException {
-        Response response;
         Request request = new Request(RequestType.DELETE_USER, userModal);
         ClientSocket.send(request);
         response = ClientSocket.listen();
         System.out.println(response.getResponseMessage());
-        userList.clear();
+        clientList.clear();
         userData = new Gson().fromJson(response.getResponseMessage(), UserData.class);
         createTable(userData.getData());
     }
@@ -109,7 +97,7 @@ public class AllUsersController {
     void EditUser(ActionEvent event) {
         try {
             stage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getResource("/edituser.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/editadminuser.fxml"));
             stage.setTitle("Редактирование записи");
             stage.setMinHeight(500);
             stage.setMinWidth(500);
@@ -118,7 +106,7 @@ public class AllUsersController {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initOwner(((Node) event.getSource()).getScene().getWindow());
             stage.showAndWait();
-            userList.clear();
+            clientList.clear();
             createTable(userData.getData());
 
         } catch (IOException e) {
@@ -140,16 +128,14 @@ public class AllUsersController {
             surname.setCellValueFactory(new PropertyValueFactory<User, String>("userSurname"));
             name.setCellValueFactory(new PropertyValueFactory<User, String>("userName"));
             login.setCellValueFactory(new PropertyValueFactory<User, String>("login"));
-            password.setCellValueFactory(new PropertyValueFactory<User, String>("password"));
-            role.setCellValueFactory(new PropertyValueFactory<User, String>("role"));
         }
-        table.setItems(userList);
+        table.setItems(clientList);
     }
 
     private void initData(ArrayList<User> users) {
 
         for (int i = 0; i < users.size(); i++) {
-            userList.add(users.get(i));
+            clientList.add(users.get(i));
         }
     }
 
@@ -157,4 +143,6 @@ public class AllUsersController {
         User selectUser = (User) table.getSelectionModel().getSelectedItem();
         userModal = selectUser;
     }
+
+
 }

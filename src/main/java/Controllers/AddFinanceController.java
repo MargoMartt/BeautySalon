@@ -28,8 +28,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import static Controllers.AdminController.financeData;
-import static Controllers.AdminController.serviceData;
+import static Controllers.LoginController.financeData;
+import static Controllers.LoginController.serviceData;
 import static Controllers.FinanceController.financeModal;
 import static Controllers.ServiceController.listMasters;
 import static Controllers.ServiceController.serviceModal;

@@ -5,7 +5,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import Models.*;
-import TCP.*;
+import TCP.Request;
+import TCP.RequestType;
+import TCP.Response;
 import Utility.ClientSocket;
 import com.google.gson.Gson;
 import javafx.event.ActionEvent;
@@ -19,7 +21,7 @@ import javafx.stage.Stage;
 
 import static Controllers.LoginController.*;
 
-public class AdminController {
+public class AdminSalonController {
     Response response;
 
     @FXML
@@ -158,7 +160,7 @@ public class AdminController {
     @FXML
     void Users(ActionEvent event) throws IOException, ClassNotFoundException {
 
-        Request request = new Request(RequestType.VIEW_USERS, "Посмотреть данные пользователей");
+        Request request = new Request(RequestType.VIEW_CLIENT, "Посмотреть данные пользователей");
         ClientSocket.send(request);
 
         response = ClientSocket.listen();
@@ -169,7 +171,7 @@ public class AdminController {
 
         users.getScene().getWindow().hide();
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getClassLoader().getResource("allusers.fxml"));
+        loader.setLocation(getClass().getClassLoader().getResource("adminusers.fxml"));
         loader.load();
         Parent root = loader.getRoot();
         Stage stage = new Stage();

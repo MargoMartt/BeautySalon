@@ -19,7 +19,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-import static Controllers.AdminController.masterData;
+import static Controllers.LoginController.UsersNameSurname;
+import static Controllers.LoginController.masterData;
 import static Controllers.SalonController.profitabilityData;
 
 public class ProfitabilityController {
@@ -99,6 +100,7 @@ public class ProfitabilityController {
 
     @FXML
     void initialize() {
+        adminData.setText(UsersNameSurname);
         createTable(profitabilities);
         sum.setText(String.valueOf(profitabilityData.getSum()));
 

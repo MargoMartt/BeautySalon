@@ -26,5 +26,8 @@ public enum RequestType {
     DELETE_RECORD,
     SALON_DATA,
     PROFITABILITY,
+    VIEW_CLIENT,
+    UPDATE_CLIENT,
+
     MAKE_REPORT
 }

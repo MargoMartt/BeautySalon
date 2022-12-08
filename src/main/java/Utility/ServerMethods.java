@@ -272,4 +272,24 @@ public class ServerMethods {
 
         return profitabilityData;
     }
+
+    public static UserData findAllClients() {
+        UserData userData = new UserData();
+        for (UsersEntity users : UsersService.findAllUsers()) {
+            User user = new User();
+            for (UsersHasRoleEntity roles : RoleHasUsersService.findAllRoles()) {
+                if (roles.getRoleIdRole() == 1 && roles.getUsersIdUser() == users.getIdUser()) {
+                    user.setIdRole(1);
+                    user.setUserId(users.getIdUser());
+                    user.setUserName(users.getUserName());
+                    user.setUserSurname(users.getUserSurname());
+                    user.setLogin(users.getLogin());
+                    userData.setData(user);
+                    break;
+                }
+            }
+
+        }
+        return userData;
+    }
 }

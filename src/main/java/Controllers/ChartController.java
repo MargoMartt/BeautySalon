@@ -16,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+import static Controllers.LoginController.UsersNameSurname;
 import static Controllers.SalonController.profitabilityData;
 
 public class ChartController {
@@ -49,6 +50,7 @@ public class ChartController {
 
     @FXML
     void initialize() {
+        adminData.setText(UsersNameSurname);
         XYChart.Series series = new XYChart.Series<>();
         for (Profitability profit : profitabilityData.getData()) {
             series.getData().add(new XYChart.Data(profit.getService(), profit.getFinalCost()));

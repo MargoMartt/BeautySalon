@@ -27,7 +27,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import static Controllers.AdminController.masterData;
+import static Controllers.LoginController.*;
 
 public class MastersController {
     static Master masterModal = new Master();
@@ -136,13 +136,23 @@ public class MastersController {
     @FXML
     void onBackButtonClick(ActionEvent event) throws IOException {
         back.getScene().getWindow().hide();
-        loader.setLocation(getClass().getClassLoader().getResource("admin.fxml"));
+        if (loginId == 3) {
+            loader.setLocation(getClass().getClassLoader().getResource("admin.fxml"));
+            loader.load();
+            Parent root = loader.getRoot();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
 
-        loader.load();
-        Parent root = loader.getRoot();
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.show();
+        }
+        if (loginId == 2) {
+            loader.setLocation(getClass().getClassLoader().getResource("adminsalona.fxml"));
+            loader.load();
+            Parent root = loader.getRoot();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+        }
     }
 
     void createTable(ArrayList<Master> masters) {
@@ -173,6 +183,7 @@ public class MastersController {
 
     @FXML
     void initialize() {
+        adminData.setText(UsersNameSurname);
         createTable(masters);
 
     }

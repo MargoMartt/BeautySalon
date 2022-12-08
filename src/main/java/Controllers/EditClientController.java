@@ -7,21 +7,22 @@ import java.util.ResourceBundle;
 import Enums.Roles;
 import Models.User;
 import Models.UserData;
-import TCP.*;
+import TCP.Request;
+import TCP.RequestType;
+import TCP.Response;
 import Utility.ClientSocket;
 import com.google.gson.Gson;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import static Controllers.LoginController.userData;
-import static Controllers.AllUsersController.userModal;
+import static Controllers.AdminUsersController.userModal;
 
-public class EditUserController {
+public class EditClientController {
 
     @FXML
     private ResourceBundle resources;
@@ -39,13 +40,6 @@ public class EditUserController {
     private Button ok;
 
     @FXML
-    private PasswordField password;
-
-    @FXML
-    private ComboBox<String> role;
-
-    ObservableList<String> list = FXCollections.observableArrayList(Roles.VISITOR.getValue(), Roles.ADMIN.getValue(), Roles.SALON_ADMIN.getValue());
-    @FXML
     private TextField surname;
 
     @FXML
@@ -56,26 +50,14 @@ public class EditUserController {
     }
 
     @FXML
-    void Role(ActionEvent event) {
-
-    }
-
-    @FXML
     void onOkButtonClick(ActionEvent event) throws IOException, ClassNotFoundException {
         Response response = new Response<>();
-        for (Roles r : Roles.values()) {
-            if (r.getValue() == role.getValue()) {
-                int id = r.getId();
-                user.setIdRole(id);
-            }
-        }
         user.setUserName(name.getText());
         user.setUserSurname(surname.getText());
-        user.setPassword(password.getText());
         user.setLogin(userModal.getLogin());
         System.out.println(user.toString());
 
-        Request request = new Request(RequestType.UPDATE_USER, user);
+        Request request = new Request(RequestType.UPDATE_CLIENT, user);
         ClientSocket.send(request);
         response = ClientSocket.listen();
         System.out.println(new Gson().fromJson(response.getResponseMessage(), Response.class));
@@ -87,17 +69,8 @@ public class EditUserController {
 
     @FXML
     void initialize() {
-        role.setItems(list);
-        role.setValue(Roles.VISITOR.getValue());
         name.setText(userModal.getUserName());
         surname.setText(userModal.getUserSurname());
-        password.setText(userModal.getPassword());
-
-//        list.add((Roles.ADMIN.getValue()));
-//        list.add((Roles.VISITOR.getValue()));
-//        list.add((Roles.SALON_ADMIN.getValue()));
-
-//        role.setItems(FXCollections.observableList(list));
     }
 
 }

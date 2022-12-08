@@ -16,8 +16,7 @@ import java.sql.Date;
 
 public class ClientThread implements Runnable {
     private Socket clientSocket;
-    private UsersService usersService;
-    private RoleService roleService;
+
     private Response response;
     private Request request;
     private Gson gson;
@@ -76,7 +75,7 @@ public class ClientThread implements Runnable {
                                     break;
                                 }
                             }
-                            User userData = new User(id, user.getUserName(), user.getUserSurname(), user.getLogin(), user.getPassword());
+                            User userData = new User(id, respUser.getUserName(), respUser.getUserSurname(), respUser.getLogin(), respUser.getPassword());
                             response = new Response(ResponseType.Ok, userData);
                         }
 
@@ -439,8 +438,27 @@ public class ClientThread implements Runnable {
                         System.out.println(response.getResponseMessage());
                         break;
                     }
+                    case VIEW_CLIENT:{
+                        UserData userData = ServerMethods.findAllClients();
+                        response = new Response<>(ResponseType.Ok, userData);
+                        outputStream.writeObject(new Gson().toJson(response));
+                        System.out.println(response.getResponseMessage());
+                        break;
+                    }
+                    case UPDATE_CLIENT:{
+                        User user = gson.fromJson(requestMessage, User.class);
+                        UsersEntity respUser = UsersService.findUserLog(user.getLogin());
+                        respUser.setUserName(user.getUserName());
+                        respUser.setUserSurname(user.getUserSurname());
 
+                        UsersService.updateUser(respUser);
 
+                        UserData userData = ServerMethods.findAllClients();
+                        response = new Response<>(ResponseType.Ok, userData);
+                        outputStream.writeObject(new Gson().toJson(response));
+                        System.out.println(response.getResponseMessage());
+                        break;
+                    }
                 }
                 inputStream = new ObjectInputStream(clientSocket.getInputStream());
                 outputStream = new ObjectOutputStream(clientSocket.getOutputStream());

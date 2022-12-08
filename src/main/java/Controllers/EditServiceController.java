@@ -24,7 +24,7 @@ import javafx.stage.Stage;
 
 import static Controllers.ServiceController.listMasters;
 import static Controllers.ServiceController.serviceModal;
-import static Controllers.AdminController.serviceData;
+import static Controllers.LoginController.serviceData;
 
 public class EditServiceController {
 

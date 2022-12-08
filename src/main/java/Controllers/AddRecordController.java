@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static Controllers.AdminController.recordData;
+import static Controllers.LoginController.recordData;
 import static Controllers.RecordController.serviceList;
 
 public class AddRecordController {

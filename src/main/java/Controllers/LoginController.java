@@ -3,7 +3,7 @@ package Controllers;
 
 import Entities.UsersEntity;
 import Entities.UsersHasRoleEntity;
-import Models.User;
+import Models.*;
 import TCP.*;
 import Utility.ClientSocket;
 import com.google.gson.Gson;
@@ -22,6 +22,11 @@ import java.io.IOException;
 
 public class LoginController {
     Response resp;
+    public static FinanceData financeData = new FinanceData();
+    public static ServiceData serviceData = new ServiceData();
+    public static UserData userData = new UserData();
+    public static MasterData masterData = new MasterData();
+    public  static RecordData recordData = new RecordData();
 
     @FXML // fx:id="back"
     private Button back; // Value injected by FXMLLoader
@@ -36,7 +41,9 @@ public class LoginController {
     private TextField login;
     @FXML
     private Label response;
-    Gson gson;
+
+    public static int loginId = 0;
+    public static String UsersNameSurname = "";
 
     @FXML
     void onBackButtonClick(ActionEvent event) throws IOException {
@@ -50,8 +57,6 @@ public class LoginController {
         stage.setScene(new Scene(root));
         stage.show();
     }
-
-    UsersHasRoleEntity usersHasRole = new UsersHasRoleEntity();
 
     @FXML
     void onLoginButtonClick(ActionEvent event) throws IOException, ClassNotFoundException {
@@ -67,6 +72,8 @@ public class LoginController {
             System.out.println(userData.getIdRole());
 
             if (userData.getIdRole() == 3) {
+                loginId = 3;
+                UsersNameSurname = userData.getUserName() + " " + userData.getUserSurname();
                 login.getScene().getWindow().hide();
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getClassLoader().getResource("admin.fxml"));
@@ -77,7 +84,21 @@ public class LoginController {
                 stage.setScene(new Scene(root));
                 stage.show();
             }
-        } else {
+            if (userData.getIdRole() == 2) {
+                loginId = 2;
+                UsersNameSurname = userData.getUserName() + " " + userData.getUserSurname();
+                login.getScene().getWindow().hide();
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getClassLoader().getResource("adminsalona.fxml"));
+
+                loader.load();
+                Parent root = loader.getRoot();
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.show();
+            }
+        } else
+        {
             response.setText("Неверный логин или пароль");
         }
     }
