@@ -42,6 +42,10 @@ public class LoginController {
     @FXML
     private Label response;
 
+    public static String loginClient;
+    public static String nameClient;
+    public static String surnameClient;
+
     public static int loginId = 0;
     public static String UsersNameSurname = "";
 
@@ -90,6 +94,23 @@ public class LoginController {
                 login.getScene().getWindow().hide();
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getClassLoader().getResource("adminsalona.fxml"));
+
+                loader.load();
+                Parent root = loader.getRoot();
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.show();
+            }
+            if (userData.getIdRole() == 1) {
+
+                loginId = 1;
+                loginClient = userData.getLogin();
+                nameClient = userData.getUserName();
+                surnameClient = userData.getUserSurname();
+                UsersNameSurname = userData.getUserName() + " " + userData.getUserSurname();
+                login.getScene().getWindow().hide();
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getClassLoader().getResource("client.fxml"));
 
                 loader.load();
                 Parent root = loader.getRoot();

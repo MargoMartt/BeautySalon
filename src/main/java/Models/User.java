@@ -8,6 +8,7 @@ public class User {
     private String userSurname;
     private String login;
     private String password;
+    private String newPassword;
 
 
     public void setIdRole(int idRole) {
@@ -16,6 +17,14 @@ public class User {
 
     public int getUserId() {
         return userId;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
     }
 
     public void setUserId(int userId) {

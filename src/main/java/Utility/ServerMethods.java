@@ -146,6 +146,20 @@ public class ServerMethods {
         return serviceData;
     }
 
+    public static Finance findClientFinance(UsersEntity user) {
+        Finance finance = new Finance();
+        finance.setUserId(user.getIdUser());
+        finance.setBalance(user.getBalance());
+        for (BonusEntity bonus : BonusService.findAllBonus()) {
+            if (bonus.getIdUser() == user.getIdUser()) {
+                finance.setBonusId(bonus.getBonusId());
+                finance.setDiscount(bonus.getDiscount());
+                finance.setCertificate(bonus.getCertificate());
+                break;
+            }
+        }
+        return finance;
+    }
 
     public static FinanceData findAllFinance() {
         FinanceData financeData = new FinanceData();

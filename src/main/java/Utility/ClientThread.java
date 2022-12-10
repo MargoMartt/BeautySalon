@@ -438,14 +438,14 @@ public class ClientThread implements Runnable {
                         System.out.println(response.getResponseMessage());
                         break;
                     }
-                    case VIEW_CLIENT:{
+                    case VIEW_CLIENT: {
                         UserData userData = ServerMethods.findAllClients();
                         response = new Response<>(ResponseType.Ok, userData);
                         outputStream.writeObject(new Gson().toJson(response));
                         System.out.println(response.getResponseMessage());
                         break;
                     }
-                    case UPDATE_CLIENT:{
+                    case UPDATE_CLIENT: {
                         User user = gson.fromJson(requestMessage, User.class);
                         UsersEntity respUser = UsersService.findUserLog(user.getLogin());
                         respUser.setUserName(user.getUserName());
@@ -455,6 +455,101 @@ public class ClientThread implements Runnable {
 
                         UserData userData = ServerMethods.findAllClients();
                         response = new Response<>(ResponseType.Ok, userData);
+                        outputStream.writeObject(new Gson().toJson(response));
+                        System.out.println(response.getResponseMessage());
+                        break;
+                    }
+                    case UPDATE_CLIENT_DATA: {
+                        User user = gson.fromJson(requestMessage, User.class);
+                        UsersEntity respUser = UsersService.findUserLog(user.getLogin());
+                        respUser.setUserName(user.getUserName());
+                        respUser.setUserSurname(user.getUserSurname());
+
+                        UsersService.updateUser(respUser);
+
+                        User sendUser = new User(respUser.getUserName(), respUser.getUserSurname(), respUser.getLogin(), respUser.getPassword());
+                        response = new Response<>(ResponseType.Ok, sendUser);
+                        outputStream.writeObject(new Gson().toJson(response));
+                        System.out.println(response.getResponseMessage());
+                        break;
+                    }
+                    case UPDATE_CLIENT_PASSWORD: {
+                        User user = gson.fromJson(requestMessage, User.class);
+                        UsersEntity respUser = UsersService.findUserLog(user.getLogin());
+                        if (respUser.getPassword().equals(user.getPassword())) {
+                            if (!respUser.getPassword().equals(user.getNewPassword())) {
+                                respUser.setPassword(user.getNewPassword());
+                                UsersService.updateUser(respUser);
+                                response = new Response<>(ResponseType.Ok, "Пароль изменен!");
+                            } else {
+                                response = new Response<>(ResponseType.ERROR, "Старый и новый пароли совпадают!");
+                            }
+                        } else if (!respUser.getPassword().equals(user.getPassword())) {
+                            response = new Response<>(ResponseType.ERROR, "Изменяемый пароль введен неверно!");
+                        }
+                        outputStream.writeObject(new Gson().toJson(response));
+                        System.out.println(response.getResponseMessage());
+                        break;
+                    }
+                    case DELETE_CLIENT: {
+                        User user = gson.fromJson(requestMessage, User.class);
+                        UsersEntity respUser = UsersService.findUserLog(user.getLogin());
+                        if (respUser.getPassword().equals(user.getPassword())) {
+
+                            BonusEntity bonus = ServerMethods.findBonusUser(respUser.getIdUser());
+                            UsersHasRoleEntity entity = new UsersHasRoleEntity(respUser.getIdUser());
+                            RecordEntity record = ServerMethods.findRecordUser(respUser.getIdUser());
+
+                            BonusService.deleteBonus(bonus);
+                            RecordService.deleteRecord(record);
+                            RoleHasUsersService.deleteRole(entity);
+                            UsersService.deleteUser(respUser);
+
+                            response = new Response<>(ResponseType.Ok, "Пользователь удален!");
+                        } else {
+                            response = new Response<>(ResponseType.ERROR, "Пароль введен неверно!");
+                        }
+                        outputStream.writeObject(new Gson().toJson(response));
+                        System.out.println(response.getResponseMessage());
+                        break;
+                    }
+                    case CLIENT_FINANCE: {
+                        User user = gson.fromJson(requestMessage, User.class);
+                        UsersEntity respUser = UsersService.findUserLog(user.getLogin());
+                        Finance finance = ServerMethods.findClientFinance(respUser);
+                        response = new Response<>(ResponseType.Ok, finance);
+                        outputStream.writeObject(new Gson().toJson(response));
+                        System.out.println(response.getResponseMessage());
+                        break;
+                    }
+                    case BYE_CERTIFICATE: {
+                        Finance finance = gson.fromJson(requestMessage, Finance.class);
+                        UsersEntity respUser = UsersService.findUser(finance.getUserId());
+                        BonusEntity bonus = BonusService.findBonusId(finance.getBonusId());
+                        if (finance.getBalance() < finance.getCertificate()) {
+                            response = new Response<>(ResponseType.ERROR, "Недостаточно средств");
+                        } else if (finance.getCertificate() == 0) {
+                            response = new Response<>(ResponseType.ERROR, "Сертификат не выбран");
+                        } else if (bonus != null && bonus.getCertificate() != 0) {
+                            response = new Response<>(ResponseType.ERROR, "Сертификат уже приобретен. Сначала воспользуйтесь имеющимся.");
+                        } else {
+                            respUser.setBalance(finance.getBalance() - finance.getCertificate());
+                            UsersService.updateUser(respUser);
+                            if (bonus == null) {
+                                bonus = new BonusEntity();
+                                bonus.setCertificate(finance.getCertificate());
+                                bonus.setUsersByIdUser(respUser);
+                                BonusService.saveBonus(bonus);
+                                finance.setBonusId(bonus.getBonusId());
+                            } else {
+                                bonus.setCertificate(finance.getCertificate());
+                                BonusService.updateBonus(bonus);
+                                finance.setBonusId(bonus.getBonusId());
+                            }
+                            finance.setBalance(respUser.getBalance());
+                            finance.setCertificate(bonus.getCertificate());
+                            response = new Response<>(ResponseType.Ok, finance);
+                        }
                         outputStream.writeObject(new Gson().toJson(response));
                         System.out.println(response.getResponseMessage());
                         break;
