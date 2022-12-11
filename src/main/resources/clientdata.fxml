@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1097.0" style="-fx-background-image: url('img/client.png');" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ClientDataController">
+   <children>
+      <ImageView fitHeight="780.0" fitWidth="1097.0">
+         <image>
+            <Image url="@img/clientdata.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="back" layoutX="38.0" layoutY="361.0" mnemonicParsing="false" onAction="#onBackButtonClick" opacity="0.0" prefHeight="59.0" prefWidth="57.0" style="-fx-background-image: url('img/back.png'); -fx-background-color: yellow; -fx-border-radius: 4;" textFill="WHITE" />
+      <ImageView layoutX="47.0" layoutY="367.0" opacity="0.33">
+         <image>
+            <Image url="@img/back.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="adminData" layoutX="462.0" layoutY="85.0" prefHeight="27.0" prefWidth="173.0" style="-fx-text-alignment: centre;" textAlignment="CENTER" textFill="#7c6c72" textOverrun="CLIP">
+         <font>
+            <Font name="Comic Sans MS" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="login" layoutX="563.0" layoutY="442.0" prefHeight="27.0" prefWidth="173.0" style="-fx-text-alignment: centre;" textAlignment="CENTER" textFill="#7c6c72" textOverrun="CLIP">
+         <font>
+            <Font name="Comic Sans MS" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="name" layoutX="563.0" layoutY="307.0" prefHeight="27.0" prefWidth="173.0" style="-fx-text-alignment: centre;" textAlignment="CENTER" textFill="#7c6c72" textOverrun="CLIP">
+         <font>
+            <Font name="Comic Sans MS" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="surname" layoutX="563.0" layoutY="377.0" prefHeight="27.0" prefWidth="173.0" style="-fx-text-alignment: centre;" textAlignment="CENTER" textFill="#7c6c72" textOverrun="CLIP">
+         <font>
+            <Font name="Comic Sans MS" size="14.0" />
+         </font>
+      </Label>
+      <Button fx:id="edit" layoutX="448.0" layoutY="520.0" mnemonicParsing="false" onAction="#Edit" prefHeight="27.0" prefWidth="201.0" style="-fx-background-color: E8E9E9;" text="Изменить данные" textFill="#7c7c7c">
+         <font>
+            <Font name="SansSerif Regular" size="18.0" />
+         </font>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <effect>
+            <DropShadow offsetY="5.0">
+               <color>
+                  <Color red="0.6762914061546326" green="0.7857862114906311" blue="0.8026315569877625" />
+               </color>
+            </DropShadow>
+         </effect>
+      </Button>
+      <Button fx:id="delete" layoutX="448.0" layoutY="617.0" mnemonicParsing="false" onAction="#Delete" prefHeight="33.0" prefWidth="201.0" style="-fx-background-color: E8E9E9;" text="Удалить аккаунт" textFill="#7c7c7c">
+         <font>
+            <Font name="SansSerif Regular" size="18.0" />
+         </font>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <effect>
+            <DropShadow offsetY="5.0">
+               <color>
+                  <Color red="0.6762914061546326" green="0.7857862114906311" blue="0.8026315569877625" />
+               </color>
+            </DropShadow>
+         </effect>
+      </Button>
+      <Button fx:id="editpassword" layoutX="448.0" layoutY="568.0" mnemonicParsing="false" onAction="#EditPassword" prefHeight="27.0" prefWidth="201.0" style="-fx-background-color: E8E9E9;" text="Изменить пароль" textFill="#7c7c7c">
+         <font>
+            <Font name="SansSerif Regular" size="18.0" />
+         </font>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <effect>
+            <DropShadow offsetY="5.0">
+               <color>
+                  <Color red="0.6762914061546326" green="0.7857862114906311" blue="0.8026315569877625" />
+               </color>
+            </DropShadow>
+         </effect>
+      </Button>
+   </children>
+</Pane>
