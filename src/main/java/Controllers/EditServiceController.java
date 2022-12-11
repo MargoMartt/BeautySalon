@@ -3,12 +3,15 @@ package Controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import Enums.Roles;
 import Models.*;
 import TCP.Request;
 import TCP.RequestType;
 import TCP.Response;
+import TCP.ResponseType;
 import Utility.ClientSocket;
 import com.google.gson.Gson;
 import javafx.collections.FXCollections;
@@ -66,22 +69,35 @@ public class EditServiceController {
     void onOkButtonClick(ActionEvent event) throws IOException, ClassNotFoundException {
         service.setServiceId(serviceModal.getServiceId());
         service.setServiceName(name.getText());
-        service.setServicePrice(Double.parseDouble(price.getText()));
 
-        for (int i = 0; i < listMasters.getData().size(); i++) {
-            if (master.getValue().equals(listMasters.getData().get(i).getMasterInfo())) {
-                service.setMasterId(listMasters.getData().get(i).getId());
-                break;
-            } else service.setMasterId(0);
+        Pattern pattern = Pattern.compile("^[0-9]+$");
+        Matcher matcher = pattern.matcher(price.getText());
+        boolean matchFound = matcher.find();
+        if (matchFound) {
+            service.setServicePrice(Double.parseDouble(price.getText()));
+        } else {
+            service.setServicePrice(0);
         }
-        if (service.getMasterId() == 0)
-            response.setText("Необходимо выбрать мастера");
+
+        if (master.getValue() == null) {
+            service.setMasterId(0);
+        } else {
+            for (int i = 0; i < listMasters.getData().size(); i++) {
+                if (master.getValue().equals(listMasters.getData().get(i).getMasterInfo())) {
+                    service.setMasterId(listMasters.getData().get(i).getId());
+                    break;
+                }
+            }
+        }
 
         Request request = new Request(RequestType.UPDATE_SERVICE, service);
         ClientSocket.send(request);
         resp = ClientSocket.listen();
-        serviceData = new Gson().fromJson(resp.getResponseMessage(), ServiceData.class);
-        Cancel(event);
+        if (resp.getResponseType().equals(ResponseType.Ok)) {
+            serviceData = new Gson().fromJson(resp.getResponseMessage(), ServiceData.class);
+            Cancel(event);
+        } else
+            response.setText(new Gson().fromJson(resp.getResponseMessage(), String.class));
     }
 
     ObservableList<String> list = FXCollections.observableArrayList();

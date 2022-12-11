@@ -3,6 +3,8 @@ package Controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import Enums.Certificate;
 import Enums.Discount;
@@ -71,7 +73,17 @@ public class AddFinanceController {
     @FXML
     void onOkButtonClick(ActionEvent event) throws IOException, ClassNotFoundException {
         Finance finance = new Finance();
-        finance.setBalance(Double.parseDouble(amount.getText()));
+
+        Pattern pattern = Pattern.compile("^[0-9]+$");
+        Matcher matcher = pattern.matcher(amount.getText());
+        boolean matchFound = matcher.find();
+        if (matchFound) {
+            finance.setBalance(Double.parseDouble(amount.getText()));
+        }
+        else {
+            finance.setBalance(0.0);
+        }
+
         finance.setBonusId(financeModal.getBonusId());
         finance.setUserId(financeModal.getUserId());
 
@@ -99,8 +111,13 @@ public class AddFinanceController {
         Request request = new Request(RequestType.UPDATE_FIANCE, finance);
         ClientSocket.send(request);
         resp = ClientSocket.listen();
-        financeData = new Gson().fromJson(resp.getResponseMessage(), FinanceData.class);
-        Cancel(event);
+
+        if (resp.getResponseType().equals(ResponseType.Ok)) {
+            financeData = new Gson().fromJson(resp.getResponseMessage(), FinanceData.class);
+            Cancel(event);
+        } else
+            response.setText(new Gson().fromJson(resp.getResponseMessage(), String.class));
+
     }
 
     ObservableList<Integer> certificateList = FXCollections.observableArrayList(Certificate.FIFTY.getCost(), Certificate.TWENTY.getCost(), Certificate.ONE_HUNDRED.getCost(), Certificate.TWO_HUNDRED.getCost());

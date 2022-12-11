@@ -203,6 +203,16 @@ public class ClientThread implements Runnable {
                             response = new Response<>(ResponseType.ERROR, answer);
                             outputStream.writeObject(new Gson().toJson(response));
                         } else {
+                            if (service.getMasterId() == 0){
+                                response = new Response<>(ResponseType.ERROR, "Выберите мастера!");
+                                outputStream.writeObject(new Gson().toJson(response));
+                                break;
+                            }
+                            if (service.getServicePrice() == 0){
+                                response = new Response<>(ResponseType.ERROR, "Введите число");
+                                outputStream.writeObject(new Gson().toJson(response));
+                                break;
+                            }
                             serviceEntity.setMasterId(service.getMasterId());
                             serviceEntity.setServiceName(service.getServiceName());
                             serviceEntity.setServicePrice(service.getServicePrice());
@@ -218,6 +228,17 @@ public class ClientThread implements Runnable {
                     case UPDATE_SERVICE: {
                         Service service = gson.fromJson(requestMessage, Service.class);
                         ServiceEntity respService = ServiceService.findServiceId(service.getServiceId());
+
+                        if (service.getMasterId() == 0){
+                            response = new Response<>(ResponseType.ERROR, "Выберите мастера!");
+                            outputStream.writeObject(new Gson().toJson(response));
+                            break;
+                        }
+                        if (service.getServicePrice() == 0){
+                            response = new Response<>(ResponseType.ERROR, "Введите число");
+                            outputStream.writeObject(new Gson().toJson(response));
+                            break;
+                        }
 
                         respService.setServiceName(service.getServiceName());
                         respService.setServicePrice(service.getServicePrice());
@@ -273,6 +294,12 @@ public class ClientThread implements Runnable {
                         Finance finance = gson.fromJson(requestMessage, Finance.class);
                         BonusEntity bonusEntity = new BonusEntity();
                         UsersEntity user = UsersService.findUser(finance.getUserId());
+
+                        if (finance.getBalance() == 0.0){
+                            response = new Response<>(ResponseType.ERROR, "Введите число");
+                            outputStream.writeObject(new Gson().toJson(response));
+                            break;
+                        }
 
                         if (BonusService.findBonusId(finance.getBonusId()) != null) {
 
@@ -581,6 +608,13 @@ public class ClientThread implements Runnable {
                     case BALANCE: {
                         Finance finance = gson.fromJson(requestMessage, Finance.class);
                         UsersEntity respUser = UsersService.findUser(finance.getUserId());
+
+                        if (finance.getBalance() == 0.0){
+                            response = new Response<>(ResponseType.ERROR, "Введите число");
+                            outputStream.writeObject(new Gson().toJson(response));
+                            break;
+                        }
+
                         respUser.setBalance(respUser.getBalance() + finance.getBalance());
                         UsersService.updateUser(respUser);
                         finance.setBalance(respUser.getBalance());

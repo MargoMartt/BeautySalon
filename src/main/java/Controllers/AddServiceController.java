@@ -22,6 +22,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static Controllers.LoginController.serviceData;
 import static Controllers.ServiceController.listMasters;
@@ -60,20 +62,45 @@ public class AddServiceController {
         stage.close();
     }
 
+//    Pattern pattern = Pattern.compile("^[0-9]+$");
+
     @FXML
     void onOkButtonClick(ActionEvent event) throws IOException, ClassNotFoundException {
         Service service = new Service();
         service.setServiceId(serviceModal.getServiceId());
         service.setServiceName(name.getText());
-        service.setServicePrice(Double.parseDouble(price.getText()));
 
-        for (int i = 0; i < listMasters.getData().size(); i++) {
-            if (master.getValue().equals(listMasters.getData().get(i).getMasterInfo())) {
-                service.setMasterId(listMasters.getData().get(i).getId());
-                break;
-            } else service.setMasterId(0);
+        Pattern pattern = Pattern.compile("^[0-9]+$");
+        Matcher matcher = pattern.matcher(price.getText());
+        boolean matchFound = matcher.find();
+        if (matchFound) {
+            service.setServicePrice(Double.parseDouble(price.getText()));
         }
+        else {
+            service.setServicePrice(0);
+        }
+//        Boolean isNum = true;
+//        char[] priceArr = price.getText().toCharArray();
+//        for (int i = 0; i < priceArr.length; i++) {
+//            if ((priceArr[i] != 45 && priceArr[i] < 48) || priceArr[i] > 57) {
+//                service.setServicePrice(0);
+//                isNum = false;
+//                break;
+//            }
+//        }
+//        if (isNum)
+//            service.setServicePrice(Double.parseDouble(price.getText()));
 
+        if (master.getValue() == null) {
+            service.setMasterId(0);
+        } else {
+            for (int i = 0; i < listMasters.getData().size(); i++) {
+                if (master.getValue().equals(listMasters.getData().get(i).getMasterInfo())) {
+                    service.setMasterId(listMasters.getData().get(i).getId());
+                    break;
+                }
+            }
+        }
 
         Request request = new Request(RequestType.ADD_SERVICE, service);
         ClientSocket.send(request);
@@ -84,6 +111,7 @@ public class AddServiceController {
         } else
             response.setText(new Gson().fromJson(resp.getResponseMessage(), String.class));
     }
+
 
     ObservableList<String> list = FXCollections.observableArrayList();
 

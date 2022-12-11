@@ -3,6 +3,8 @@ package Controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import Models.Finance;
 import TCP.Request;
@@ -51,7 +53,15 @@ public class BalanceController {
     Response resp;
     @FXML
     void onOkButtonClick(ActionEvent event) throws IOException, ClassNotFoundException {
-        financeData.setBalance(Double.valueOf(balance.getText()));
+        Pattern pattern = Pattern.compile("^[0-9]+$");
+        Matcher matcher = pattern.matcher(balance.getText());
+        boolean matchFound = matcher.find();
+        if (matchFound) {
+            financeData.setBalance(Double.parseDouble(balance.getText()));
+        }
+        else {
+            financeData.setBalance(0.0);
+        }
 
         Request request = new Request(RequestType.BALANCE, financeData);
         ClientSocket.send(request);
