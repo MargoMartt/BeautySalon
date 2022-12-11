@@ -76,6 +76,7 @@ public class ClientThread implements Runnable {
                                 }
                             }
                             User userData = new User(id, respUser.getUserName(), respUser.getUserSurname(), respUser.getLogin(), respUser.getPassword());
+                            userData.setUserId(respUser.getIdUser());
                             response = new Response(ResponseType.Ok, userData);
                         }
 
@@ -196,7 +197,8 @@ public class ClientThread implements Runnable {
                     case ADD_SERVICE: {
                         ServiceEntity serviceEntity = new ServiceEntity();
                         Service service = gson.fromJson(requestMessage, Service.class);
-                        if (ServiceService.findServiceId(service.getMasterId()) != null) {
+
+                        if (ServerMethods.isService(service.getServiceName())) {
                             String answer = "Такая услуга уже существует";
                             response = new Response<>(ResponseType.ERROR, answer);
                             outputStream.writeObject(new Gson().toJson(response));
@@ -220,6 +222,9 @@ public class ClientThread implements Runnable {
                         respService.setServiceName(service.getServiceName());
                         respService.setServicePrice(service.getServicePrice());
                         respService.setMasterId(service.getMasterId());
+
+                        BeautyMastersEntity respMaser = BeautyMastersService.findMaster(service.getMasterId());
+                        BeautyMastersService.updateMaster(respMaser);
 
                         ServiceService.updateService(respService);
 
@@ -554,6 +559,94 @@ public class ClientThread implements Runnable {
                         System.out.println(response.getResponseMessage());
                         break;
                     }
+                    case GIFT: {
+                        Finance finance = gson.fromJson(requestMessage, Finance.class);
+                        BonusEntity bonus = BonusService.findBonusId(finance.getBonusId());
+                        UsersEntity recipient = UsersService.findUserLog(finance.getLogin());
+
+                        if (recipient == null) {
+                            response = new Response<>(ResponseType.ERROR, "Пользователь не найден! Проверьте логин.");
+                        } else {
+                            recipient.setBalance(recipient.getBalance() + finance.getCertificate());
+                            UsersService.updateUser(recipient);
+                            bonus.setCertificate(0);
+                            BonusService.updateBonus(bonus);
+                            finance.setCertificate(0);
+                            response = new Response<>(ResponseType.Ok, finance);
+                        }
+                        outputStream.writeObject(new Gson().toJson(response));
+                        System.out.println(response.getResponseMessage());
+                        break;
+                    }
+                    case BALANCE: {
+                        Finance finance = gson.fromJson(requestMessage, Finance.class);
+                        UsersEntity respUser = UsersService.findUser(finance.getUserId());
+                        respUser.setBalance(respUser.getBalance() + finance.getBalance());
+                        UsersService.updateUser(respUser);
+                        finance.setBalance(respUser.getBalance());
+                        response = new Response<>(ResponseType.Ok, finance);
+                        outputStream.writeObject(new Gson().toJson(response));
+                        System.out.println(response.getResponseMessage());
+                        break;
+                    }
+                    case CLIENT_RECORD: {
+                        int id = gson.fromJson(requestMessage, Integer.class);
+                        UsersEntity respUser = UsersService.findUser(id);
+                        RecordData recordData = ServerMethods.ClientRecord(respUser);
+                        response = new Response<>(ResponseType.Ok, recordData);
+                        outputStream.writeObject(new Gson().toJson(response));
+                        System.out.println(response.getResponseMessage());
+                        break;
+                    }
+                    case CLIENT_RECORD_ADD: {
+                        Record record = gson.fromJson(requestMessage, Record.class);
+                        RecordEntity recordEntity = new RecordEntity();
+                        ServiceEntity service = ServiceService.findServiceId(record.getServiceId());
+
+                        Boolean isExist = ServerMethods.findRecord(record.getServiceId(), record.getDate(), record.getTime());
+
+                        if (isExist) {
+                            System.out.println("1");
+                            response = new Response<>(ResponseType.ERROR, "Выбранное время занято, пожалуйста, выберите другое.");
+                            outputStream.writeObject(new Gson().toJson(response));
+                            System.out.println(response.getResponseMessage());
+                            break;
+                        }
+                        UsersEntity user = UsersService.findUser(record.getClientId());
+                        BonusEntity bonus = BonusService.findBonusUser(user.getIdUser());
+                        if (bonus == null) break;
+                        if (user.getBalance() == null) {
+                            System.out.println("3");
+                            response = new Response<>(ResponseType.ERROR, "Недостаточно денег на счете.");
+                            outputStream.writeObject(new Gson().toJson(response));
+                            System.out.println(response.getResponseMessage());
+                            break;
+                        }
+                        if (user.getBalance() < (service.getServicePrice() - service.getServicePrice() * bonus.getDiscount() / 100)) {
+                            response = new Response<>(ResponseType.ERROR, "Недостаточно денег на счете.");
+                            outputStream.writeObject(new Gson().toJson(response));
+                            System.out.println(response.getResponseMessage());
+                            break;
+                        }
+                        recordEntity.setDate(Date.valueOf(record.getDate()));
+                        recordEntity.setTime(record.getTime());
+                        recordEntity.setUsersByIdUser(user);
+                        recordEntity.setServiceByserviceId(ServiceService.findServiceId(record.getServiceId()));
+                        recordEntity.setTotalCost(service.getServicePrice() - service.getServicePrice() * bonus.getDiscount() / 100);
+                        recordEntity.setserviceId(record.getServiceId());
+                        RecordService.saveRecord(recordEntity);
+
+                        Double balance = user.getBalance() - recordEntity.getTotalCost();
+                        user.setBalance(balance);
+                        UsersService.updateUser(user);
+
+                        RecordData recordData = ServerMethods.ClientRecord(user);
+                        response = new Response<>(ResponseType.Ok, recordData);
+                        outputStream.writeObject(new Gson().toJson(response));
+                        System.out.println(response.getResponseMessage());
+                        break;
+                    }
+
                 }
                 inputStream = new ObjectInputStream(clientSocket.getInputStream());
                 outputStream = new ObjectOutputStream(clientSocket.getOutputStream());

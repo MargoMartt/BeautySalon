@@ -243,6 +243,40 @@ public class ServerMethods {
         return recordData;
     }
 
+    public static RecordData ClientRecord(UsersEntity user) {
+        RecordData recordData = new RecordData();
+        for (RecordEntity recordEntity : RecordService.findAllRecords()) {
+            if (recordEntity.getIdUser() == user.getIdUser()) {
+                Record record = new Record();
+                record.setRecordId(recordEntity.getRecordId());
+                record.setDate(String.valueOf(recordEntity.getDate()));
+                record.setTime(recordEntity.getTime());
+                record.setClientId(recordEntity.getIdUser());
+                record.setServiceId(recordEntity.getserviceId());
+
+                for (BonusEntity bonus : BonusService.findAllBonus()
+                ) {
+                    if (bonus.getIdUser() == user.getIdUser()) {
+                        record.setDiscount(bonus.getDiscount());
+                        break;
+                    } else record.setDiscount(0);
+                }
+
+                ServiceEntity service = ServiceService.findServiceId(record.getServiceId());
+                record.setService(service.getServiceName());
+                record.setCost(service.getServicePrice());
+                record.setMasterId(service.getMasterId());
+
+                BeautyMastersEntity master = BeautyMastersService.findMaster(record.getMasterId());
+                record.setMaster(master.getMasterName() + " " + master.getMasterSurname());
+
+                record.setFinalCost(record.getCost() - record.getCost() * record.getDiscount() / 100);
+                recordData.setData(record);
+            }
+        }
+        return recordData;
+    }
+
     public static Boolean findRecord(int id, String date, String time) {
         ServiceEntity serviceEntity = ServiceService.findServiceId(id);
         for (RecordEntity records : RecordService.findAllRecords()) {
@@ -305,5 +339,15 @@ public class ServerMethods {
 
         }
         return userData;
+    }
+    public static Boolean isService(String name){
+        Boolean isExists = false;
+        for (ServiceEntity services : ServiceService.findAllServices()) {
+            if (services.getServiceName().equals(name)){
+                isExists = true;
+                break;
+            }
+        }
+        return isExists;
     }
 }

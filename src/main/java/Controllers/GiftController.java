@@ -64,6 +64,7 @@ public class GiftController {
         if (resp.getResponseType().equals(ResponseType.ERROR)) {
             response.setText(new Gson().fromJson(resp.getResponseMessage(), String.class));
         } else if (resp.getResponseType().equals(ResponseType.Ok)){
+            financeData = new Gson().fromJson(resp.getResponseMessage(), Finance.class);
             Cancel(event);
         }
     }

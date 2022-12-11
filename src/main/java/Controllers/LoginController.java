@@ -43,6 +43,7 @@ public class LoginController {
     private Label response;
 
     public static String loginClient;
+    public static int idClient;
     public static String nameClient;
     public static String surnameClient;
 
@@ -102,8 +103,8 @@ public class LoginController {
                 stage.show();
             }
             if (userData.getIdRole() == 1) {
-
                 loginId = 1;
+                idClient = userData.getUserId();
                 loginClient = userData.getLogin();
                 nameClient = userData.getUserName();
                 surnameClient = userData.getUserSurname();

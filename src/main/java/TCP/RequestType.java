@@ -35,6 +35,6 @@ public enum RequestType {
     BYE_CERTIFICATE,
     GIFT,
     BALANCE,
-
-    MAKE_REPORT
+    CLIENT_RECORD,
+    CLIENT_RECORD_ADD
 }

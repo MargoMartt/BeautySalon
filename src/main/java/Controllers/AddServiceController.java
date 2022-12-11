@@ -68,9 +68,12 @@ public class AddServiceController {
         service.setServicePrice(Double.parseDouble(price.getText()));
 
         for (int i = 0; i < listMasters.getData().size(); i++) {
-            if (master.getValue() == listMasters.getData().get(i).getMasterInfo())
+            if (master.getValue().equals(listMasters.getData().get(i).getMasterInfo())) {
                 service.setMasterId(listMasters.getData().get(i).getId());
+                break;
+            } else service.setMasterId(0);
         }
+
 
         Request request = new Request(RequestType.ADD_SERVICE, service);
         ClientSocket.send(request);

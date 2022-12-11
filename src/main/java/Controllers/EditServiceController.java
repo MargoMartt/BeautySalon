@@ -69,9 +69,13 @@ public class EditServiceController {
         service.setServicePrice(Double.parseDouble(price.getText()));
 
         for (int i = 0; i < listMasters.getData().size(); i++) {
-            if (master.getValue() == listMasters.getData().get(i).getMasterInfo())
+            if (master.getValue().equals(listMasters.getData().get(i).getMasterInfo())) {
                 service.setMasterId(listMasters.getData().get(i).getId());
+                break;
+            } else service.setMasterId(0);
         }
+        if (service.getMasterId() == 0)
+            response.setText("Необходимо выбрать мастера");
 
         Request request = new Request(RequestType.UPDATE_SERVICE, service);
         ClientSocket.send(request);
@@ -88,6 +92,7 @@ public class EditServiceController {
             list.add(listMasters.getData().get(i).getMasterInfo());
         }
         master.setItems(list);
+//        master.setValue(serviceModal.getMaster());
         name.setText(serviceModal.getServiceName());
         price.setText(String.valueOf(serviceModal.getServicePrice()));
 

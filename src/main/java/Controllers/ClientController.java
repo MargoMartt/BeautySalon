@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import Models.Finance;
 import Models.FinanceData;
+import Models.RecordData;
 import Models.User;
 import TCP.Request;
 import TCP.RequestType;
@@ -22,9 +23,10 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import static Controllers.LoginController.*;
+import static Controllers.LoginController.recordData;
 
 public class ClientController {
-
+    public  static RecordData recordData = new RecordData();
     Response response;
     public  static Finance financeData = new Finance();
     @FXML
@@ -74,7 +76,16 @@ public class ClientController {
     }
 
     @FXML
-    void Records(ActionEvent event) throws IOException {
+    void Records(ActionEvent event) throws IOException, ClassNotFoundException {
+        int id = idClient;
+        Request request = new Request(RequestType.CLIENT_RECORD, id);
+        ClientSocket.send(request);
+
+        response = ClientSocket.listen();
+        System.out.println(response);
+        recordData = new Gson().fromJson(response.getResponseMessage(), RecordData.class);
+        System.out.println(response.getResponseMessage());
+
         record.getScene().getWindow().hide();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource("clientrecord.fxml"));

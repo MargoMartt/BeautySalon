@@ -30,8 +30,8 @@
             <TableColumn fx:id="name" prefWidth="152.0" text="Имя" />
             <TableColumn fx:id="surname" prefWidth="141.0" text="Фамилия" />
             <TableColumn fx:id="activity" prefWidth="140.0" text="Специализация" />
-            <TableColumn fx:id="experience" prefWidth="109.0" text="Опыт работы" />
-            <TableColumn fx:id="service" prefWidth="175.0" text="Услуги" />
+            <TableColumn fx:id="experience" prefWidth="118.0" text="Опыт работы, мес" />
+            <TableColumn fx:id="service" prefWidth="166.0" text="Услуги" />
          </columns>
       </TableView>
       <Label fx:id="adminData" layoutX="487.0" layoutY="86.0" prefHeight="27.0" prefWidth="173.0" style="-fx-text-alignment: centre;" textAlignment="CENTER" textFill="#7c6c72" textOverrun="CLIP">

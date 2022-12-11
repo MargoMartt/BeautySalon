@@ -56,8 +56,6 @@ public class AllUsersController {
     @FXML
     private TableColumn<User, String> name;
 
-    @FXML
-    private TableColumn<User, String> password;
 
     @FXML
     private TableColumn<User, String> role;
@@ -140,7 +138,6 @@ public class AllUsersController {
             surname.setCellValueFactory(new PropertyValueFactory<User, String>("userSurname"));
             name.setCellValueFactory(new PropertyValueFactory<User, String>("userName"));
             login.setCellValueFactory(new PropertyValueFactory<User, String>("login"));
-            password.setCellValueFactory(new PropertyValueFactory<User, String>("password"));
             role.setCellValueFactory(new PropertyValueFactory<User, String>("role"));
         }
         table.setItems(userList);

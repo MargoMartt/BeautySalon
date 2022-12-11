@@ -52,6 +52,7 @@ public class ClientFinanceController {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(((Node) event.getSource()).getScene().getWindow());
         stage.showAndWait();
+        balance.setText(String.valueOf(financeData.getBalance()));
     }
 
 
