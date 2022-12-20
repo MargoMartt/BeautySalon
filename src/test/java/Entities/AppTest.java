@@ -33,7 +33,7 @@ public class AppTest
     @Test
     void testDelete() {
         try {
-            UsersService.deleteUser(UsersService.findUser(82));
+            UsersService.deleteUser(UsersService.findUser(83));
         } catch (Exception e) {
             e.printStackTrace();
             fail("Failed to delete user");
@@ -43,7 +43,7 @@ public class AppTest
     @Test
     void testRead() {
         try {
-            UsersEntity user = UsersService.findUser(82);
+            UsersEntity user = UsersService.findUser(83);
             System.out.println(user.toString());
         } catch (Exception e) {
             e.printStackTrace();
@@ -55,8 +55,8 @@ public class AppTest
     @Test
     void testUpdate() {
         try {
-            UsersEntity user = UsersService.findUser(82);
-            user.setBalance(150.0);
+            UsersEntity user = UsersService.findUser(83);
+            user.setBalance(160.0);
             UsersService.updateUser(user);
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,5 +1,6 @@
 package Start;
 
+import Utility.ClientSocket;
 import Utility.ClientThread;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -18,9 +19,9 @@ public class Client2 extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
+
         System.out.println("Start");
-        Socket client = new Socket("127.0.0.1", 2525);
-        ClientThread clientThread = new ClientThread(client);
+        ClientSocket.setInstance();
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("main.fxml"));
         Scene scene = new Scene(root);
         primaryStage.setTitle("Beauty Salon");

@@ -92,7 +92,7 @@ public class RegistrationController {
             stage.setScene(new Scene(root));
             stage.show();
         } else {
-            System.out.println(new Gson().fromJson(resp.getResponseMessage(), Response.class));
+//            System.out.println(new Gson().fromJson(resp.getResponseMessage(), Response.class));
             response.setText(resp.getResponseMessage());
         }
     }
